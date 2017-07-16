@@ -6,6 +6,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
+/**
+ * Created by Administrator on 2017/7/4.
+ */
+
 public class HttpRequest {
     public static final String BASE_URL = Constants.SERVER_URL;
     private static HttpRequest httpRequest = null;
