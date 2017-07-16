@@ -4,10 +4,7 @@ import com.example.administrator.sdk.Utils.Constants;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-/**
- * Created by Administrator on 2017/7/4.
- */
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class HttpRequest {
     public static final String BASE_URL = Constants.SERVER_URL;
@@ -26,8 +23,9 @@ public class HttpRequest {
         retrofit = new Retrofit
                 .Builder()
                 .baseUrl(BASE_URL)
-                .addCallAdapterFactory(retrofit2.adapter.rxjava.RxJavaCallAdapterFactory.create()) // 使用RxJava作为回调适配器
-                .addConverterFactory(GsonConverterFactory.create()) // 使用Gson作为数据转换器
+//                .addCallAdapterFactory(retrofit2.adapter.rxjava.RxJavaCallAdapterFactory.create()) // 使用RxJava作为回调适配器
+//                .addConverterFactory(GsonConverterFactory.create()) // 使用Gson作为数据转换器
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .build();
         apiService = retrofit.create(APIService.class);
         if (null != apiService) {

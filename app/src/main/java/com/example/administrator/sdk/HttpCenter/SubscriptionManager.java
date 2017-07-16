@@ -1,15 +1,10 @@
 package com.example.administrator.sdk.HttpCenter;
 
-import java.util.Map;
-
 import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.Subscription;
 
-/**
- * Created by Administrator on 2017/7/4.
- */
 
 public class SubscriptionManager {
     private static SubscriptionManager subscriptionManager = null;
@@ -22,7 +17,7 @@ public class SubscriptionManager {
         return subscriptionManager;
     }
 
-    public Subscription getSubscription(Observable o, Scheduler scheduler, Scheduler scheduler2, Subscriber subscriber) {
+    public Subscription getSubscription(Observable<String> o, Scheduler scheduler, Scheduler scheduler2, Subscriber subscriber) {
         try {
             subscription = o.subscribeOn(scheduler).observeOn(scheduler2).subscribe(subscriber);
             if (null != subscription) {

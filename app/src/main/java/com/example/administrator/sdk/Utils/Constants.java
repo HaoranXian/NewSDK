@@ -7,7 +7,7 @@ public final class Constants {
     /**
      * 易镜科技服务器
      */
-    public static final String SERVER_URL = "http://120.76.74.206:8080";
+    public static final String SERVER_URL = "http://120.76.74.206:8080/";
 
     // 海琛服务器
     //public static final String SERVER_URL = "http://192.168.1.102:8080";
