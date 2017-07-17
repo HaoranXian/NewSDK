@@ -24,6 +24,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
@@ -55,17 +57,29 @@ public class MainActivity extends Activity {
         params.put("sdk_version", android.os.Build.VERSION.SDK); // SDK版本
         params.put("release_version", android.os.Build.VERSION.RELEASE); // 系统版本
         params.put("iccid", SDKUtils.getICCID(this));
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Retrofit retrofit = new Retrofit.Builder()
-                            .baseUrl(Constants.SERVER_URL)
-                            .addConverterFactory(ScalarsConverterFactory.create())
-                            .build();
-                    APIService apiService = retrofit.create(APIService.class);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.SERVER_URL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+        APIService apiService = retrofit.create(APIService.class);
 
-                    Call call = apiService.getRequestContent(params);
+        apiService.getRequestContent(params).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
+            @Override
+            public void onCompleted() {
+                Toast.makeText(getApplicationContext(), "onCompleted!!!", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(getApplicationContext(), e.getMessage().toString(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNext(String s) {
+                Toast.makeText(getApplicationContext(), s.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
 //                    SubscriptionManager.getInstance().getSubscription(call, Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<ResponseBody>() {
 //                        @Override
 //                        public void onCompleted() {
@@ -82,22 +96,17 @@ public class MainActivity extends Activity {
 //                            Toast.makeText(getApplicationContext(), responseBody.toString(), Toast.LENGTH_LONG).show();
 //                        }
 //                    });
-                    call.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            Toast.makeText(getApplicationContext(), Kode.e(response.body().toString()), Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-                            Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                } catch (Exception e) {
-
-                }
-            }
-        }).start();
+//                    call.enqueue(new Callback<String>() {
+//                        @Override
+//                        public void onResponse(Call<String> call, Response<String> response) {
+//                            Toast.makeText(getApplicationContext(), Kode.e(response.body().toString()), Toast.LENGTH_LONG).show();
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<String> call, Throwable t) {
+//                            Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+//                        }
+//                    });
 
 
 //        new Thread(new Runnable() {

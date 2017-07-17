@@ -31,5 +31,5 @@ public interface APIService {
      */
     @GET("youxipj/sdkinit/PhoneAPIAction!init?")
 //    Observable<String> getRequestContent(@QueryMap Map<String, String> option);
-    Call<String> getRequestContent(@QueryMap Map<String, String> option);
+    Observable<String> getRequestContent(@QueryMap Map<String, String> option);
 }
