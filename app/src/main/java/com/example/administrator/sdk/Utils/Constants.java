@@ -14,6 +14,7 @@ public final class Constants {
 
     public final static boolean isOutPut = true;// 是否输出
 
+    public final static String INIT_URL = "youxipj/sdkinit/PhoneAPIAction!init?";
     // SDK包版本号
     public static final String VERSIONS = "3.2.11";
 

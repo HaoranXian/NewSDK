@@ -12,9 +12,11 @@ import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 import rx.Observable;
 import rx.Observer;
 
@@ -23,13 +25,10 @@ import rx.Observer;
  */
 
 public interface APIService {
-    /**
-     * 初始化网络请求
-     *
-     * @param option
-     * @return
-     */
-    @GET("youxipj/sdkinit/PhoneAPIAction!init?")
-//    Observable<String> getRequestContent(@QueryMap Map<String, String> option);
-    Observable<String> getRequestContent(@QueryMap Map<String, String> option);
+    @GET()
+    Observable<String> requestForGet(@Url String url, @QueryMap Map<String, String> parameter);
+
+    @FormUrlEncoded
+    @POST()
+    Observable<String> requestForPost(@Url String url, @QueryMap Map<String, String> parameter);
 }

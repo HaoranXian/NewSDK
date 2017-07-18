@@ -27,7 +27,7 @@ public class HttpRequest {
         retrofit = new Retrofit
                 .Builder()
                 .baseUrl(BASE_URL)
-//                .addCallAdapterFactory(retrofit2.adapter.rxjava.RxJavaCallAdapterFactory.create()) // 使用RxJava作为回调适配器
+                .addCallAdapterFactory(retrofit2.adapter.rxjava.RxJavaCallAdapterFactory.create()) // 使用RxJava作为回调适配器
 //                .addConverterFactory(GsonConverterFactory.create()) // 使用Gson作为数据转换器
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build();
