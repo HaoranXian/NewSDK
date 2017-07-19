@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.Utils;
+package com.example.administrator.sdk.utils;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -81,4 +81,25 @@ public class SDKUtils {
         }
         return imei;
     }
+
+    public static String getGameId(Context ctx) {
+        String gameId = null;
+        ApplicationInfo appinfo = null;
+        try {
+            appinfo = ctx.getPackageManager().getApplicationInfo(ctx.getPackageName(), PackageManager.GET_META_DATA);
+            if (appinfo != null) {
+                Bundle metaData = appinfo.metaData;
+                if (metaData != null) {
+                    gameId = metaData.get("Y-PAY-GAMEID").toString();
+                    return gameId;
+                }
+            }
+        } catch (Exception e) {
+            if (Log.D)
+                e.printStackTrace();
+            return gameId;
+        }
+        return gameId;
+    }
+
 }

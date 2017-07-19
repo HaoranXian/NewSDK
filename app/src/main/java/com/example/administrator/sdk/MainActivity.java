@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.example.administrator.sdk.HttpCenter.InitRequest;
+import com.example.administrator.sdk.httpCenter.InitRequest;
+import com.example.administrator.sdk.manager.RequestThroughManager;
 
 import java.util.HashMap;
 
@@ -31,5 +32,9 @@ public class MainActivity extends Activity {
 
     public void Init(View view) {
         InitRequest.getInstance().request(this);
+    }
+
+    public void Pay(View view) {
+        RequestThroughManager.getInstance().requestThrough(this, "2000", "");
     }
 }

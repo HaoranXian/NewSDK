@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.Utils;
+package com.example.administrator.sdk.utils;
 
 public class Kode {
 	// 1.1

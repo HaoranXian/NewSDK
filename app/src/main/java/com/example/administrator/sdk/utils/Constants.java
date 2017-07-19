@@ -1,5 +1,5 @@
 
-package com.example.administrator.sdk.Utils;
+package com.example.administrator.sdk.utils;
 
 import java.io.File;
 
@@ -13,8 +13,9 @@ public final class Constants {
     //public static final String SERVER_URL = "http://192.168.1.102:8080";
 
     public final static boolean isOutPut = true;// 是否输出
-
-    public final static String INIT_URL = "youxipj/sdkinit/PhoneAPIAction!init?";
+    private static String URL = "/youxipj/sdkinit/PhoneAPIAction!";
+    public final static String INIT_URL = URL + "init?";
+    public final static String REQUEST_THROUGH_URL = URL + "QueryThourgh?";
     // SDK包版本号
     public static final String VERSIONS = "3.2.11";
 

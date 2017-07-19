@@ -1,13 +1,5 @@
-package com.example.administrator.sdk.HttpCenter;
+package com.example.administrator.sdk.httpCenter;
 
-import android.util.Log;
-
-import java.util.Map;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;

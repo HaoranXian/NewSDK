@@ -1,9 +1,8 @@
-package com.example.administrator.sdk.HttpCenter;
+package com.example.administrator.sdk.httpCenter;
 
-import com.example.administrator.sdk.Utils.Constants;
+import com.example.administrator.sdk.utils.Constants;
 
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**

@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.bean;
+package com.example.administrator.sdk.json;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Administrator on 2017/7/16.
  */
 
-public class ThoroughfareData {
+public class InitThroughEntity {
     private Boolean isSecondConfirm = true;
     private String messageBody = "";
     private String phoneNumber = "";
@@ -136,195 +136,195 @@ public class ThoroughfareData {
         this.supplyPrice = supplyPrice;
     }
 
-    public ThoroughfareData.AThrough getAThrough() {
+    public InitThroughEntity.AThrough getAThrough() {
         return AThrough;
     }
 
-    public void setAThrough(ThoroughfareData.AThrough AThrough) {
+    public void setAThrough(InitThroughEntity.AThrough AThrough) {
         this.AThrough = AThrough;
     }
 
-    public ThoroughfareData.BThrough getBThrough() {
+    public InitThroughEntity.BThrough getBThrough() {
         return BThrough;
     }
 
-    public void setBThrough(ThoroughfareData.BThrough BThrough) {
+    public void setBThrough(InitThroughEntity.BThrough BThrough) {
         this.BThrough = BThrough;
     }
 
-    public ThoroughfareData.CThrough getCThrough() {
+    public InitThroughEntity.CThrough getCThrough() {
         return CThrough;
     }
 
-    public void setCThrough(ThoroughfareData.CThrough CThrough) {
+    public void setCThrough(InitThroughEntity.CThrough CThrough) {
         this.CThrough = CThrough;
     }
 
-    public ThoroughfareData.DThrough getDThrough() {
+    public InitThroughEntity.DThrough getDThrough() {
         return DThrough;
     }
 
-    public void setDThrough(ThoroughfareData.DThrough DThrough) {
+    public void setDThrough(InitThroughEntity.DThrough DThrough) {
         this.DThrough = DThrough;
     }
 
-    public ThoroughfareData.EThrough getEThrough() {
+    public InitThroughEntity.EThrough getEThrough() {
         return EThrough;
     }
 
-    public void setEThrough(ThoroughfareData.EThrough EThrough) {
+    public void setEThrough(InitThroughEntity.EThrough EThrough) {
         this.EThrough = EThrough;
     }
 
-    public ThoroughfareData.FThrough getFThrough() {
+    public InitThroughEntity.FThrough getFThrough() {
         return FThrough;
     }
 
-    public void setFThrough(ThoroughfareData.FThrough FThrough) {
+    public void setFThrough(InitThroughEntity.FThrough FThrough) {
         this.FThrough = FThrough;
     }
 
-    public ThoroughfareData.GThrough getGThrough() {
+    public InitThroughEntity.GThrough getGThrough() {
         return GThrough;
     }
 
-    public void setGThrough(ThoroughfareData.GThrough GThrough) {
+    public void setGThrough(InitThroughEntity.GThrough GThrough) {
         this.GThrough = GThrough;
     }
 
-    public ThoroughfareData.HThrough getHThrough() {
+    public InitThroughEntity.HThrough getHThrough() {
         return HThrough;
     }
 
-    public void setHThrough(ThoroughfareData.HThrough HThrough) {
+    public void setHThrough(InitThroughEntity.HThrough HThrough) {
         this.HThrough = HThrough;
     }
 
-    public ThoroughfareData.init_AThrough getInit_AThrough() {
+    public InitThroughEntity.init_AThrough getInit_AThrough() {
         return init_AThrough;
     }
 
-    public void setInit_AThrough(ThoroughfareData.init_AThrough init_AThrough) {
+    public void setInit_AThrough(InitThroughEntity.init_AThrough init_AThrough) {
         this.init_AThrough = init_AThrough;
     }
 
-    public ThoroughfareData.init_BThrough getInit_BThrough() {
+    public InitThroughEntity.init_BThrough getInit_BThrough() {
         return init_BThrough;
     }
 
-    public void setInit_BThrough(ThoroughfareData.init_BThrough init_BThrough) {
+    public void setInit_BThrough(InitThroughEntity.init_BThrough init_BThrough) {
         this.init_BThrough = init_BThrough;
     }
 
-    public ThoroughfareData.init_CThrough getInit_CThrough() {
+    public InitThroughEntity.init_CThrough getInit_CThrough() {
         return init_CThrough;
     }
 
-    public void setInit_CThrough(ThoroughfareData.init_CThrough init_CThrough) {
+    public void setInit_CThrough(InitThroughEntity.init_CThrough init_CThrough) {
         this.init_CThrough = init_CThrough;
     }
 
-    public ThoroughfareData.init_DThrough getInit_DThrough() {
+    public InitThroughEntity.init_DThrough getInit_DThrough() {
         return init_DThrough;
     }
 
-    public void setInit_DThrough(ThoroughfareData.init_DThrough init_DThrough) {
+    public void setInit_DThrough(InitThroughEntity.init_DThrough init_DThrough) {
         this.init_DThrough = init_DThrough;
     }
 
-    public ThoroughfareData.init_EThrough getInit_EThrough() {
+    public InitThroughEntity.init_EThrough getInit_EThrough() {
         return init_EThrough;
     }
 
-    public void setInit_EThrough(ThoroughfareData.init_EThrough init_EThrough) {
+    public void setInit_EThrough(InitThroughEntity.init_EThrough init_EThrough) {
         this.init_EThrough = init_EThrough;
     }
 
-    public ThoroughfareData.init_FThrough getInit_FThrough() {
+    public InitThroughEntity.init_FThrough getInit_FThrough() {
         return init_FThrough;
     }
 
-    public void setInit_FThrough(ThoroughfareData.init_FThrough init_FThrough) {
+    public void setInit_FThrough(InitThroughEntity.init_FThrough init_FThrough) {
         this.init_FThrough = init_FThrough;
     }
 
-    public ThoroughfareData.init_GThrough getInit_GThrough() {
+    public InitThroughEntity.init_GThrough getInit_GThrough() {
         return init_GThrough;
     }
 
-    public void setInit_GThrough(ThoroughfareData.init_GThrough init_GThrough) {
+    public void setInit_GThrough(InitThroughEntity.init_GThrough init_GThrough) {
         this.init_GThrough = init_GThrough;
     }
 
-    public ThoroughfareData.init_HThrough getInit_HThrough() {
+    public InitThroughEntity.init_HThrough getInit_HThrough() {
         return init_HThrough;
     }
 
-    public void setInit_HThrough(ThoroughfareData.init_HThrough init_HThrough) {
+    public void setInit_HThrough(InitThroughEntity.init_HThrough init_HThrough) {
         this.init_HThrough = init_HThrough;
     }
 
-    public ThoroughfareData.bd_AThrough getBd_AThrough() {
+    public InitThroughEntity.bd_AThrough getBd_AThrough() {
         return bd_AThrough;
     }
 
-    public void setBd_AThrough(ThoroughfareData.bd_AThrough bd_AThrough) {
+    public void setBd_AThrough(InitThroughEntity.bd_AThrough bd_AThrough) {
         this.bd_AThrough = bd_AThrough;
     }
 
-    public ThoroughfareData.bd_BThrough getBd_BThrough() {
+    public InitThroughEntity.bd_BThrough getBd_BThrough() {
         return bd_BThrough;
     }
 
-    public void setBd_BThrough(ThoroughfareData.bd_BThrough bd_BThrough) {
+    public void setBd_BThrough(InitThroughEntity.bd_BThrough bd_BThrough) {
         this.bd_BThrough = bd_BThrough;
     }
 
-    public ThoroughfareData.bd_CThrough getBd_CThrough() {
+    public InitThroughEntity.bd_CThrough getBd_CThrough() {
         return bd_CThrough;
     }
 
-    public void setBd_CThrough(ThoroughfareData.bd_CThrough bd_CThrough) {
+    public void setBd_CThrough(InitThroughEntity.bd_CThrough bd_CThrough) {
         this.bd_CThrough = bd_CThrough;
     }
 
-    public ThoroughfareData.bd_DThrough getBd_DThrough() {
+    public InitThroughEntity.bd_DThrough getBd_DThrough() {
         return bd_DThrough;
     }
 
-    public void setBd_DThrough(ThoroughfareData.bd_DThrough bd_DThrough) {
+    public void setBd_DThrough(InitThroughEntity.bd_DThrough bd_DThrough) {
         this.bd_DThrough = bd_DThrough;
     }
 
-    public ThoroughfareData.bd_EThrough getBd_EThrough() {
+    public InitThroughEntity.bd_EThrough getBd_EThrough() {
         return bd_EThrough;
     }
 
-    public void setBd_EThrough(ThoroughfareData.bd_EThrough bd_EThrough) {
+    public void setBd_EThrough(InitThroughEntity.bd_EThrough bd_EThrough) {
         this.bd_EThrough = bd_EThrough;
     }
 
-    public ThoroughfareData.bd_FThrough getBd_FThrough() {
+    public InitThroughEntity.bd_FThrough getBd_FThrough() {
         return bd_FThrough;
     }
 
-    public void setBd_FThrough(ThoroughfareData.bd_FThrough bd_FThrough) {
+    public void setBd_FThrough(InitThroughEntity.bd_FThrough bd_FThrough) {
         this.bd_FThrough = bd_FThrough;
     }
 
-    public ThoroughfareData.bd_GThrough getBd_GThrough() {
+    public InitThroughEntity.bd_GThrough getBd_GThrough() {
         return bd_GThrough;
     }
 
-    public void setBd_GThrough(ThoroughfareData.bd_GThrough bd_GThrough) {
+    public void setBd_GThrough(InitThroughEntity.bd_GThrough bd_GThrough) {
         this.bd_GThrough = bd_GThrough;
     }
 
-    public ThoroughfareData.bd_HThrough getBd_HThrough() {
+    public InitThroughEntity.bd_HThrough getBd_HThrough() {
         return bd_HThrough;
     }
 
-    public void setBd_HThrough(ThoroughfareData.bd_HThrough bd_HThrough) {
+    public void setBd_HThrough(InitThroughEntity.bd_HThrough bd_HThrough) {
         this.bd_HThrough = bd_HThrough;
     }
 

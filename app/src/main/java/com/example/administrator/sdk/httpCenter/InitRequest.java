@@ -1,13 +1,12 @@
-package com.example.administrator.sdk.HttpCenter;
+package com.example.administrator.sdk.httpCenter;
 
 import android.content.Context;
 
-import com.example.administrator.sdk.Utils.Constants;
-import com.example.administrator.sdk.Utils.Kode;
-import com.example.administrator.sdk.Utils.Log;
-import com.example.administrator.sdk.Utils.SDKUtils;
-import com.example.administrator.sdk.bean.ThoroughfareData;
-import com.google.gson.Gson;
+import com.example.administrator.sdk.utils.Constants;
+import com.example.administrator.sdk.utils.Kode;
+import com.example.administrator.sdk.utils.Log;
+import com.example.administrator.sdk.utils.SDKUtils;
+import com.example.administrator.sdk.data.GetThroughEntityData;
 
 import java.util.HashMap;
 
@@ -21,7 +20,7 @@ import rx.schedulers.Schedulers;
 
 public class InitRequest {
     private static InitRequest initRequest = null;
-    private static final String init_Url = Constants.INIT_URL;
+    private static final String url = Constants.INIT_URL;
 
     public static InitRequest getInstance() {
         if (initRequest == null) {
@@ -32,7 +31,7 @@ public class InitRequest {
 
     public void request(final Context context) {
         try {
-            SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForGet(init_Url, getParameter(context)), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
+            SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForGet(url, getParameter(context)), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
                     Log.debug("init request Completed!!");
@@ -46,9 +45,7 @@ public class InitRequest {
                 @Override
                 public void onNext(String s) {
                     Log.debug("init request content :" + Kode.e(s));
-                    Gson gson = new Gson();
-                    ThoroughfareData thoroughfareData = gson.fromJson(Kode.e(s), ThoroughfareData.class);
-                    Log.debug("======>ThroughareData:" + thoroughfareData.getRows().get(0).dname);
+                    GetThroughEntityData.getInstance().putData(Kode.e(s));
                 }
             });
         } catch (Exception e) {

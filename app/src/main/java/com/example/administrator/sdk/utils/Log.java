@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.Utils;
+package com.example.administrator.sdk.utils;
 
 import android.content.Context;
 import android.widget.Toast;
