@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,6 +28,13 @@ public class SubscriptionManager {
         return subscriptionManager;
     }
 
+    /**
+     * @param o          Observable
+     * @param scheduler  运行时线程
+     * @param scheduler2 运行后操作所在线程
+     * @param subscriber 回调的Subscriber
+     * @return
+     */
     public Subscription getSubscription(Observable<String> o, Scheduler scheduler, Scheduler scheduler2, Subscriber subscriber) {
         try {
             subscription = o.subscribeOn(scheduler).observeOn(scheduler2).subscribe(subscriber);

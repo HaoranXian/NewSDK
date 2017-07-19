@@ -32,7 +32,7 @@ public class InitRequest {
 
     public void request(final Context context) {
         try {
-            HttpRequest.getInstance().retrofitManager().requestForGet(init_Url, getParameter(context)).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<String>() {
+            SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForGet(init_Url, getParameter(context)), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
                     Log.debug("init request Completed!!");
@@ -45,7 +45,6 @@ public class InitRequest {
 
                 @Override
                 public void onNext(String s) {
-                    //解析数据
                     Log.debug("init request content :" + Kode.e(s));
                     Gson gson = new Gson();
                     ThoroughfareData thoroughfareData = gson.fromJson(Kode.e(s), ThoroughfareData.class);
