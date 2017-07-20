@@ -26,6 +26,9 @@ public class InitThroughData {
            /*
            初始化通道
            */
+            if (InitThroughDataList.size() > 0) {
+                InitThroughDataList.clear();
+            }
             InitThroughDataList.add(GsonUtils.getInstance().EntityToJson(t.getInit_AThrough()));
             InitThroughDataList.add(GsonUtils.getInstance().EntityToJson(t.getInit_BThrough()));
             InitThroughDataList.add(GsonUtils.getInstance().EntityToJson(t.getInit_CThrough()));

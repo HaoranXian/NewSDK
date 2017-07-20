@@ -5,13 +5,14 @@ import com.example.administrator.sdk.utils.Log;
 import com.example.administrator.sdk.json.InitThroughEntity;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 /**
  * Created by Administrator on 2017/7/19.
  */
 
 public class NormalThroughData {
-    private static LinkedList<String> NormalThroughDataList = new LinkedList<>();
+    private static LinkedList<Object> NormalThroughDataList = new LinkedList<>();
     private static InitThroughEntity thoroughfareData = null;
     private static NormalThroughData throughData = null;
 
@@ -27,6 +28,9 @@ public class NormalThroughData {
             /*
                正常通道
             */
+            if (NormalThroughDataList.size() > 0) {
+                NormalThroughDataList.clear();
+            }
             NormalThroughDataList.add(GsonUtils.getInstance().EntityToJson(t.getAThrough()));
             NormalThroughDataList.add(GsonUtils.getInstance().EntityToJson(t.getBThrough()));
             NormalThroughDataList.add(GsonUtils.getInstance().EntityToJson(t.getCThrough()));
@@ -44,7 +48,7 @@ public class NormalThroughData {
         }
     }
 
-    public static LinkedList<String> getNormalThroughDataList() {
+    public static LinkedList<Object> getNormalThroughDataList() {
         return NormalThroughDataList;
     }
 }

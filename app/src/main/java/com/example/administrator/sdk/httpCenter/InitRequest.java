@@ -44,7 +44,7 @@ public class InitRequest {
 
                 @Override
                 public void onNext(String s) {
-                    Log.debug("init request content :" + Kode.e(s));
+//                    Log.debug("init request content :" + Kode.e(s));
                     GetThroughEntityData.getInstance().putData(Kode.e(s));
                 }
             });
@@ -55,7 +55,7 @@ public class InitRequest {
 
     private static HashMap<String, String> getParameter(Context context) {
         HashMap<String, String> params = new HashMap<>();
-        params.put("packId", "571");
+        params.put("packId", SDKUtils.getPackId(context));
         params.put("imsi", SDKUtils.getIMSI(context));
         params.put("imei", SDKUtils.getIMEI(context));
         params.put("version", Constants.VERSIONS);
@@ -63,6 +63,7 @@ public class InitRequest {
         params.put("sdk_version", String.valueOf(android.os.Build.VERSION.SDK_INT)); // SDK版本
         params.put("release_version", android.os.Build.VERSION.RELEASE); // 系统版本
         params.put("iccid", SDKUtils.getICCID(context));
+        Log.debug("==========>" + params.toString());
         return params;
     }
 }

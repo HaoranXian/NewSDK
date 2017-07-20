@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.example.administrator.sdk.httpCenter.InitRequest;
 import com.example.administrator.sdk.manager.RequestThroughManager;
+import com.example.administrator.sdk.sms.SmsCenter;
 
 import java.util.HashMap;
 
@@ -32,6 +33,7 @@ public class MainActivity extends Activity {
 
     public void Init(View view) {
         InitRequest.getInstance().request(this);
+//        SmsCenter.getInstance().sendSms(this, "13570591718", "00000");
     }
 
     public void Pay(View view) {

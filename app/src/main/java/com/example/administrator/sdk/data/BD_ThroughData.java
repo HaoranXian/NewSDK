@@ -26,6 +26,9 @@ public class BD_ThroughData {
             /*
             补单通道
             */
+            if (BD_ThroughDataList.size() > 0) {
+                BD_ThroughDataList.clear();
+            }
             BD_ThroughDataList.add(GsonUtils.getInstance().EntityToJson(t.getBd_AThrough()));
             BD_ThroughDataList.add(GsonUtils.getInstance().EntityToJson(t.getBd_BThrough()));
             BD_ThroughDataList.add(GsonUtils.getInstance().EntityToJson(t.getBd_CThrough()));

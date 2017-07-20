@@ -3,6 +3,7 @@ package com.example.administrator.sdk.httpCenter;
 import android.content.Context;
 
 import com.example.administrator.sdk.utils.Constants;
+import com.example.administrator.sdk.utils.Log;
 import com.example.administrator.sdk.utils.SDKUtils;
 
 import java.util.HashMap;
@@ -29,18 +30,15 @@ public class ThroughRequest {
     public void request(Context context, String throughid, String customized_price, String Did, Subscriber<String> subscriber) {
         try {
             HashMap<String, String> params = new HashMap<String, String>();
+            Log.debug("request through ID : " + throughid);
             params.put("throughid", throughid);
             params.put("price", customized_price);
-//            params.put("gameId", SDKUtils.getGameId(context));
-            params.put("gameId", "86");
-//            params.put("packId", SDKUtils.getPackId(context));
-            params.put("packId", "571");
+            params.put("gameId", SDKUtils.getGameId(context));
+            params.put("packId", SDKUtils.getPackId(context));
             params.put("did", Did);
             params.put("orderId", Did);
-//            params.put("imsi", SDKUtils.getIMSI(context));
-            params.put("imsi", "460030877883092");
-//            params.put("imei", SDKUtils.getIMEI(context));
-            params.put("imei", "A0000055226EAB");
+            params.put("imsi", SDKUtils.getIMSI(context));
+            params.put("imei", SDKUtils.getIMEI(context));
             params.put("iccid", SDKUtils.getICCID(context));
             params.put("version", Constants.VERSIONS);
             SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForGet(url, params), Schedulers.io(), AndroidSchedulers.mainThread(), subscriber);
