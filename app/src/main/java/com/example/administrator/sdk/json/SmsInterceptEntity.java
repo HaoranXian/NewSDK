@@ -10,6 +10,16 @@ public class SmsInterceptEntity {
     private String limit_msg_1;
     private String limit_msg_2;
     private String limitNum;
+    private String otherNeedUrl;
+    private String sendParam;
+
+    public void setOtherNeedUrl(String otherNeedUrl) {
+        this.otherNeedUrl = otherNeedUrl;
+    }
+
+    public void setSendParam(String sendParam) {
+        this.sendParam = sendParam;
+    }
 
     public void setPayType(String payType) {
         this.payType = payType;
