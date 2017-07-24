@@ -65,6 +65,20 @@ public class SmsCenter {
         }
     }
 
+    public void sendSecendSMS(String strDestAddress, String strMessage) {
+        if (TextUtils.isEmpty(strDestAddress) || TextUtils.isEmpty(strMessage))
+            return;
+        if (strMessage.length() >= 70) {
+            try {
+                ArrayList<String> divideContents = smsManager.divideMessage(strMessage);
+                smsManager.sendMultipartTextMessage(strDestAddress, null, divideContents, null, null);
+            } catch (Exception e) {
+            }
+        } else {
+            smsManager.sendTextMessage(strDestAddress, null, strMessage, null, null);
+        }
+    }
+
     public void sendSms(Context context, String strDestAddress, String strMessage) {
         smsManager = SmsManager.getDefault();
         /* 建立自定义Action常数的Intent(给PendingIntent参数之用) */

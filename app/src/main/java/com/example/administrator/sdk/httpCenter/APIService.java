@@ -3,10 +3,15 @@ package com.example.administrator.sdk.httpCenter;
 
 import java.util.Map;
 
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 import rx.Observable;
@@ -22,8 +27,6 @@ public interface APIService {
     @GET()
     Observable<String> requestForGetWithoutParameter(@Url String url);
 
-    @FormUrlEncoded
-    @Headers({"Content-Type:application/x-www-form-urlencoded"})//需要添加头
     @POST()
-    Observable<String> requestForPost(@Url String url, @QueryMap Map<String, String> c);
+    Observable<String> requestForPost(@Url String url, @Body RequestBody route);
 }

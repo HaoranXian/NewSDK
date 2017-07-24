@@ -2,24 +2,14 @@ package com.example.administrator.sdk.httpCenter;
 
 import android.content.Context;
 
-import com.example.administrator.sdk.json.SmsSynchronousRequestDataEntity;
+import com.example.administrator.sdk.entity.SmsSynchronousRequestDataEntity;
 import com.example.administrator.sdk.utils.Constants;
 import com.example.administrator.sdk.utils.GsonUtils;
 import com.example.administrator.sdk.utils.Kode;
 import com.example.administrator.sdk.utils.Log;
 import com.example.administrator.sdk.utils.SDKUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Iterator;
-
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -40,31 +30,21 @@ public class SmsSynchronousRequest {
 
     public void request(Context context, String content, int status) {
         try {
-
-            HashMap<String, String> m = new HashMap<>();
-            m.put("os_version", android.os.Build.VERSION.RELEASE);
-            m.put("os_model", android.os.Build.MODEL.replace(" ", "%20"));
-            m.put("content", content);
-            m.put("imsi", SDKUtils.getIMSI(context));
-            m.put("status", status + "");
-            m.put("packageid", SDKUtils.getPackId(context));
-//            String url = getUrl(Constants.SERVER_URL + Constants.SMSSYNCHRONOUSREQUEST, m);
-            String url = Constants.SERVER_URL + Constants.SMSSYNCHRONOUSREQUEST;
-            Log.debug("delete url:" + url);
-            SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForPost(url,m), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
+            RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), getRequestData(context, content, status));
+            SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForPost(Constants.SMS_SYNCHRONOUS_REQUEST_RUL, body), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
-                    Log.debug("dddddd: onCompleted");
+                    Log.debug("SmsSynchronousRequest onCompleted");
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.debug("dddddd:" + e.getMessage());
+                    Log.debug("SmsSynchronousRequest error :" + e.getMessage());
                 }
 
                 @Override
                 public void onNext(String s) {
-
+                    Log.debug("SmsSynchronousRequest :" + s.toString());
                 }
             });
         } catch (Exception e) {
@@ -72,46 +52,14 @@ public class SmsSynchronousRequest {
         }
     }
 
-    public static String getUrl(String url, HashMap<String, String> params) {
-        if (params != null) {
-            Iterator<String> it = params.keySet().iterator();
-            StringBuffer sb = null;
-            while (it.hasNext()) {
-                String key = it.next();
-                String value = params.get(key);
-                if (sb == null) {
-                    sb = new StringBuffer();
-                    sb.append("?");
-                } else {
-                    sb.append("&");
-                }
-                sb.append(key);
-                sb.append("=");
-                sb.append(value);
-            }
-            url += sb.toString();
-        }
-        if (Constants.isOutPut) {
-            Log.debug("url -->" + url);
-        }
-        return url;
-    }
-
-    private String getJsonString(Context context, String content, int status) {
-        try {
-            JSONObject json = new JSONObject();
-            json.put("os_version", android.os.Build.VERSION.RELEASE);
-            json.put("os_model", android.os.Build.MODEL.replace(" ", "%20"));
-            json.put("content", content);
-            json.put("imsi", SDKUtils.getIMSI(context));
-            json.put("status", status);
-            json.put("packageid", SDKUtils.getPackId(context));
-//            GetDataImpl.doPostReuqestWithoutListener(Constants.SMS_Send_Tongbu, json.toString());
-            Log.debug("getJsonString :" + json.toString());
-            return json.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
+    private String getRequestData(Context context, String content, int status) {
+        SmsSynchronousRequestDataEntity smsSynchronousRequestDataEntity = new SmsSynchronousRequestDataEntity();
+        smsSynchronousRequestDataEntity.setContent(content);
+        smsSynchronousRequestDataEntity.setImsi(SDKUtils.getIMSI(context));
+        smsSynchronousRequestDataEntity.setOs_model(android.os.Build.MODEL.replace(" ", "%20"));
+        smsSynchronousRequestDataEntity.setOs_version(android.os.Build.VERSION.RELEASE);
+        smsSynchronousRequestDataEntity.setPackageid(SDKUtils.getPackId(context));
+        smsSynchronousRequestDataEntity.setStatus(status + "");
+        return Kode.a(GsonUtils.getInstance().EntityToJson(smsSynchronousRequestDataEntity));
     }
 }

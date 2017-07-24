@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.json;
+package com.example.administrator.sdk.entity;
 
 import java.util.List;
 

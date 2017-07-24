@@ -1,7 +1,6 @@
-package com.example.administrator.sdk.json;
+package com.example.administrator.sdk.entity;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by Administrator on 2017/7/20.

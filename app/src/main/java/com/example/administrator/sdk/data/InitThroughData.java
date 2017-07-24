@@ -2,7 +2,7 @@ package com.example.administrator.sdk.data;
 
 import com.example.administrator.sdk.utils.GsonUtils;
 import com.example.administrator.sdk.utils.Log;
-import com.example.administrator.sdk.json.InitThroughEntity;
+import com.example.administrator.sdk.entity.InitThroughEntity;
 
 import java.util.LinkedList;
 
