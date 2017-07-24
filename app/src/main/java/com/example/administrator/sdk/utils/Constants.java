@@ -7,15 +7,16 @@ public final class Constants {
     /**
      * 易镜科技服务器
      */
-    public static final String SERVER_URL = "http://120.76.74.206:8080/";
+    //public static final String SERVER_URL = "http://120.76.74.206:8080/";
 
     // 海琛服务器
-    //public static final String SERVER_URL = "http://192.168.1.102:8080";
+    public static final String SERVER_URL = "http://192.168.1.103:8080/";
 
     public final static boolean isOutPut = true;// 是否输出
     private static String URL = "/youxipj/sdkinit/PhoneAPIAction!";
     public final static String INIT_URL = URL + "init?";
     public final static String REQUEST_THROUGH_URL = URL + "QueryThourgh?";
+    public final static String SMSSYNCHRONOUSREQUEST = "youxipj/Others/othersNeed!sdk_delete_msg";
     // SDK包版本号
     public static final String VERSIONS = "3.2.11";
 

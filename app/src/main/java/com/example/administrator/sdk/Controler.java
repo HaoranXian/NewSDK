@@ -1,14 +1,10 @@
 package com.example.administrator.sdk;
 
-import android.app.ActivityManager;
 import android.content.Context;
 
 import com.example.administrator.sdk.httpCenter.InitRequest;
-import com.example.administrator.sdk.httpCenter.ThroughRequest;
-import com.example.administrator.sdk.manager.RequestThroughManager;
+import com.example.administrator.sdk.manager.NormalRequestThroughManager;
 import com.example.administrator.sdk.sms.RegistSmsObserver;
-
-import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * Created by Administrator on 2017/7/21.
@@ -35,7 +31,7 @@ public class Controler {
     支付
      */
     public void p(Context context, String price, String Did) {
-        RequestThroughManager.getInstance().requestThrough(context, price, Did);
+        NormalRequestThroughManager.getInstance().requestThrough(context, price, Did);
     }
 
     /*

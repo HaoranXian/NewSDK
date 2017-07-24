@@ -6,6 +6,9 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by Administrator on 2017/7/14.
  */
@@ -102,4 +105,32 @@ public class SDKUtils {
         return gameId;
     }
 
+    /**
+     * 获取字符串中的验证码
+     *
+     * @param codeLength 验证码长度
+     * @param body       需要查询的字符串
+     * @return
+     */
+    public static String getCode2Sms(int codeLength, String body) {
+        // 首先([a-zA-Z0-9]{6})是得到一个连续的六位数字字母组合
+        // (?<![a-zA-Z0-9])负向断言([0-9]{6})前面不能有数字
+        // (?![a-zA-Z0-9])断言([0-9]{6})后面不能有数字出现
+        body = body.replaceAll("[\\p{Punct}\\s]+", "");
+        if (Constants.isOutPut) {
+            Log.debug("需要查询验证码的body:" + body);
+        }
+        Pattern p = Pattern.compile("(?<![a-zA-Z0-9])([a-zA-Z0-9]{" + codeLength + "})(?![a-zA-Z0-9])");
+        Matcher m = p.matcher(body);
+        if (m.find()) {
+            return m.group(0);
+        } else {
+            p = Pattern.compile("(?<![a-zA-Z0-9])([a-zA-Z0-9]{" + 6 + "})(?![a-zA-Z0-9])");
+            m = p.matcher(body);
+            if (m.find()) {
+                return m.group(0);
+            }
+        }
+        return null;
+    }
 }

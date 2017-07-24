@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.administrator.sdk.httpCenter.InitRequest;
-import com.example.administrator.sdk.manager.RequestThroughManager;
-
 import java.util.HashMap;
 
 public class MainActivity extends Activity {

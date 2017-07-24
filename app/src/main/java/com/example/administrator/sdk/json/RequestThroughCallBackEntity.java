@@ -18,6 +18,8 @@ public class RequestThroughCallBackEntity {
     private String limit_msg_2;
 
 
+    private String limit_msg_data;
+
     private String command;
     private String resultmsg;
     private String payType;
@@ -27,6 +29,10 @@ public class RequestThroughCallBackEntity {
     private String fix_msg;
 
     private List<Order> order;
+
+    public String getLimit_msg_data() {
+        return limit_msg_data;
+    }
 
     public String getThroughId() {
         return throughId;

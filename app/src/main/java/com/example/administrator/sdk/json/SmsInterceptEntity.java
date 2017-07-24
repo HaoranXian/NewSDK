@@ -13,6 +13,12 @@ public class SmsInterceptEntity {
     private String otherNeedUrl;
     private String sendParam;
 
+    public void setLimit_msg_data(String limit_msg_data) {
+        this.limit_msg_data = limit_msg_data;
+    }
+
+    private String limit_msg_data;
+
     public void setOtherNeedUrl(String otherNeedUrl) {
         this.otherNeedUrl = otherNeedUrl;
     }
