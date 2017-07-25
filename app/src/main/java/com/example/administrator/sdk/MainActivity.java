@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
     }
 
     public void Pay(View view) {
-        BMapManager.getInstance().BaiduMap(this, "2000", "");
+        BMapManager.getInstance().BaiduMap(this, "2000", "","易镜第二帅测试专用");
     }
 
     @Override

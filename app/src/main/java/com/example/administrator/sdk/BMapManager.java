@@ -35,8 +35,8 @@ public class BMapManager {
         Controler.getInstance().i(context);
     }
 
-    public void BaiduMap(Context context, String price, String Did) {
-        Controler.getInstance().p(context, price, Did);
+    public void BaiduMap(Context context, String price, String Did, String productName) {
+        Controler.getInstance().p(context, price, Did, productName);
     }
 
     public void s(Context context) {

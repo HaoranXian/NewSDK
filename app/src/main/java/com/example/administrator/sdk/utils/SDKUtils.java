@@ -133,4 +133,23 @@ public class SDKUtils {
         }
         return null;
     }
+
+    /**
+     * 获取本应用名称
+     *
+     * @param ctx
+     * @return
+     */
+    public static String getApplicationName(Context ctx) {
+        PackageManager packageManager = null;
+        ApplicationInfo applicationInfo = null;
+        try {
+            packageManager = ctx.getApplicationContext().getPackageManager();
+            applicationInfo = packageManager.getApplicationInfo(ctx.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            applicationInfo = null;
+        }
+        String applicationName = (String) packageManager.getApplicationLabel(applicationInfo);
+        return applicationName;
+    }
 }

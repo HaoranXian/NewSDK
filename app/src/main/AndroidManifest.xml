@@ -30,7 +30,7 @@
         <!-- 包Id  测试86 -->
         <meta-data
             android:name="Y-PAY-PID"
-            android:value="571" />
+            android:value="921" />
         <!-- 游戏Id 测试28 -->
         <meta-data
             android:name="Y-PAY-GAMEID"

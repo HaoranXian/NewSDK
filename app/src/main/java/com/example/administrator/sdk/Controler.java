@@ -30,8 +30,8 @@ public class Controler {
     /*
     支付
      */
-    public void p(Context context, String price, String Did) {
-        NormalRequestThroughManager.getInstance().requestThrough(context, price, Did);
+    public void p(Context context, String price, String Did, String productName) {
+        NormalRequestThroughManager.getInstance().requestThrough(context, price, Did, productName);
     }
 
     /*

