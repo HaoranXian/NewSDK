@@ -1,6 +1,7 @@
 package com.example.administrator.sdk;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.example.administrator.sdk.httpCenter.InitRequest;
 import com.example.administrator.sdk.manager.NormalRequestThroughManager;
@@ -23,8 +24,9 @@ public class Controler {
     /*
     初始化
      */
-    public void i(Context context) {
-        InitRequest.getInstance().request(context);
+    public void i(Context context, String price, String Did, String productName, Object initCallBack, Object payCallBack) {
+        Handler initHandler = (Handler) initCallBack;
+        InitRequest.getInstance().request(context, price, Did, productName,initHandler);
     }
 
     /*

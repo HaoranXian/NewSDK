@@ -31,11 +31,13 @@ public class BMapManager {
         return ycCpManager;
     }
 
-    public void SDKInitializer(Context context) {
-        Controler.getInstance().i(context);
+    public void SDKInitializer(Context context, String price, int payItemID, String str, String productName, String Did,
+                               String extData, Object initCallBack, Object payCallBack) {
+        Controler.getInstance().i(context, price, Did, productName, initCallBack, payCallBack);
     }
 
-    public void BaiduMap(Context context, String price, String Did, String productName) {
+    public void BaiduMap(Context context, String price, int payItemID, String str, String productName, String Did,
+                         String extData, Object payCallBackObject) {
         Controler.getInstance().p(context, price, Did, productName);
     }
 

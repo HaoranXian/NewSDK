@@ -1,6 +1,7 @@
 package com.example.administrator.sdk.httpCenter;
 
 import android.content.Context;
+import android.os.Handler;
 
 import com.example.administrator.sdk.utils.Constants;
 import com.example.administrator.sdk.utils.Kode;
@@ -29,7 +30,7 @@ public class InitRequest {
         return initRequest;
     }
 
-    public void request(final Context context) {
+    public void request(final Context context, final String price, final String Did, final String productName, Handler initCallBack) {
         try {
             SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForGet(url, getParameter(context)), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
                 @Override
