@@ -54,7 +54,7 @@
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
--keep class com.example.administrator.sdk.BMapManager {*;}
+-keep class com.baidu.BaiduMap.BMapManager {*;}
 
 # OkHttp3
 -dontwarn okhttp3.logging.**
