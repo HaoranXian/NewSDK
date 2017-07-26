@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.administrator.sdk">
+    package="com.baidu.BaiduMap">
 
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
@@ -20,7 +20,7 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true">
-        <activity android:name="com.example.administrator.sdk.MainActivity">
+        <activity android:name="com.baidu.BaiduMap.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

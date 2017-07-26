@@ -1,7 +1,8 @@
-package com.example.administrator.sdk.data;
+package com.baidu.BaiduMap.data;
 
 import android.content.Context;
-import com.example.administrator.sdk.entity.InitThroughEntity;
+
+import com.baidu.BaiduMap.entity.InitThroughEntity;
 
 /**
  * Created by Administrator on 2017/7/19.
@@ -19,7 +20,6 @@ public class GetThroughEntityData {
     }
 
     public void putData(InitThroughEntity initThroughEntity, Context context) {
-
         if (null != initThroughEntity) {
             InitThroughData.getInstance().putData(initThroughEntity);
             NormalThroughData.getInstance().putData(initThroughEntity);

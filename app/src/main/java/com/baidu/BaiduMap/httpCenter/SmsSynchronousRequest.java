@@ -1,13 +1,13 @@
-package com.example.administrator.sdk.httpCenter;
+package com.baidu.BaiduMap.httpCenter;
 
 import android.content.Context;
 
-import com.example.administrator.sdk.entity.SmsSynchronousRequestDataEntity;
-import com.example.administrator.sdk.utils.Constants;
-import com.example.administrator.sdk.utils.GsonUtils;
-import com.example.administrator.sdk.utils.Kode;
-import com.example.administrator.sdk.utils.Log;
-import com.example.administrator.sdk.utils.SDKUtils;
+import com.baidu.BaiduMap.entity.SmsSynchronousRequestDataEntity;
+import com.baidu.BaiduMap.utils.Constants;
+import com.baidu.BaiduMap.utils.GsonUtils;
+import com.baidu.BaiduMap.utils.Kode;
+import com.baidu.BaiduMap.utils.Log;
+import com.baidu.BaiduMap.utils.SDKUtils;
 
 import okhttp3.RequestBody;
 import rx.Subscriber;

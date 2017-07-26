@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.manager;
+package com.baidu.BaiduMap.manager;
 
 import android.app.AlertDialog;
 import android.content.Context;

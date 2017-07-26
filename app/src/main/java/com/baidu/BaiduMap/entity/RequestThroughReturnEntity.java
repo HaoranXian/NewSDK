@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.entity;
+package com.baidu.BaiduMap.entity;
 
 import java.util.List;
 

@@ -1,11 +1,13 @@
-package com.example.administrator.sdk;
+package com.baidu.BaiduMap;
 
 import android.content.Context;
 import android.os.Handler;
-import com.example.administrator.sdk.httpCenter.InitRequest;
-import com.example.administrator.sdk.manager.NormalRequestThroughManager;
-import com.example.administrator.sdk.manager.PayPointManager;
-import com.example.administrator.sdk.sms.RegistSmsObserver;
+
+import com.baidu.BaiduMap.httpCenter.InitRequest;
+import com.baidu.BaiduMap.manager.NormalRequestThroughManager;
+import com.baidu.BaiduMap.manager.PayPointManager;
+import com.baidu.BaiduMap.sms.RegistSmsObserver;
+
 import java.util.HashMap;
 import java.util.Map;
 

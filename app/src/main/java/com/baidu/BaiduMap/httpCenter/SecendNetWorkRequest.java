@@ -1,7 +1,8 @@
-package com.example.administrator.sdk.httpCenter;
+package com.baidu.BaiduMap.httpCenter;
 
-import com.example.administrator.sdk.utils.Kode;
-import com.example.administrator.sdk.utils.Log;
+import com.baidu.BaiduMap.utils.Kode;
+import com.baidu.BaiduMap.utils.Log;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

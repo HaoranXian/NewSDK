@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.utils;
+package com.baidu.BaiduMap.utils;
 
 import android.content.Context;
 import android.widget.Toast;

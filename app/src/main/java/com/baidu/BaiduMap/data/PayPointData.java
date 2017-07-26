@@ -1,12 +1,12 @@
-package com.example.administrator.sdk.data;
+package com.baidu.BaiduMap.data;
 
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.example.administrator.sdk.entity.InitThroughEntity;
-import com.example.administrator.sdk.utils.GsonUtils;
-import com.example.administrator.sdk.utils.Log;
-import com.example.administrator.sdk.utils.SDKUtils;
+import com.baidu.BaiduMap.entity.InitThroughEntity;
+import com.baidu.BaiduMap.utils.GsonUtils;
+import com.baidu.BaiduMap.utils.Log;
+import com.baidu.BaiduMap.utils.SDKUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,16 +31,20 @@ public class PayPointData {
     }
 
     public void putData(InitThroughEntity t, Context context) {
-        String rows = GsonUtils.getInstance().EntityToJson(t.getRows());
+        Log.debug("=======>" + t.getRows());
+        String rows = "{" + "\"rows\"" + ":" + GsonUtils.getInstance().EntityToJson(t.getRows()) + "}";
+        Log.debug("========>" + rows);
         payPoint(rows, context);
     }
 
     private void payPoint(String s, Context context) {
+        JSONObject oj;
         try {
-            JSONArray j = new JSONArray(s.toString());
-            for (int i = 0; i < j.length(); i++) {
+            oj = new JSONObject(s.toString());
+            JSONArray jsonArray = oj.getJSONArray("rows");
+            for (int i = 0; i < jsonArray.length(); i++) {
                 Map<String, Object> map = new HashMap<String, Object>();
-                JSONObject json = j.getJSONObject(i);
+                JSONObject json = jsonArray.getJSONObject(i);
                 String imsi = SDKUtils.getIMSI(context);
                 if (imsi.equals("")) {
                     return;

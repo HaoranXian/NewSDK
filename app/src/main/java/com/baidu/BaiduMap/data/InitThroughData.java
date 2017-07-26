@@ -1,8 +1,9 @@
-package com.example.administrator.sdk.data;
+package com.baidu.BaiduMap.data;
 
-import com.example.administrator.sdk.utils.GsonUtils;
-import com.example.administrator.sdk.utils.Log;
-import com.example.administrator.sdk.entity.InitThroughEntity;
+import com.baidu.BaiduMap.entity.InitThroughEntity;
+import com.baidu.BaiduMap.utils.GsonUtils;
+import com.baidu.BaiduMap.utils.Log;
+
 import java.util.LinkedList;
 
 /**
@@ -39,9 +40,6 @@ public class InitThroughData {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        for (int i = 0; i < InitThroughDataList.size(); i++) {
-            Log.debug("init through list :" + InitThroughDataList.get(i).toString());
         }
     }
 

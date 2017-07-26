@@ -1,4 +1,4 @@
-package com.example.administrator.sdk;
+package com.baidu.BaiduMap;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.administrator.sdk.utils.Log;
+import com.baidu.BaiduMap.utils.Log;
 
 import java.util.HashMap;
 

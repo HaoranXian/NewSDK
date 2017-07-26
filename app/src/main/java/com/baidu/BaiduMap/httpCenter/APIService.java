@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.httpCenter;
+package com.baidu.BaiduMap.httpCenter;
 
 
 import java.util.Map;

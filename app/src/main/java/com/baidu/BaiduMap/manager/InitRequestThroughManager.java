@@ -1,20 +1,20 @@
-package com.example.administrator.sdk.manager;
+package com.baidu.BaiduMap.manager;
 
 import android.content.Context;
 import android.os.Handler;
-import com.example.administrator.sdk.data.InitThroughData;
-import com.example.administrator.sdk.httpCenter.InitRequest;
-import com.example.administrator.sdk.httpCenter.ThroughRequest;
-import com.example.administrator.sdk.entity.RequestThroughCallBackEntity;
-import com.example.administrator.sdk.entity.SmsInterceptEntity;
-import com.example.administrator.sdk.sms.SmsCenter;
-import com.example.administrator.sdk.sms.SmsInterceptCenter;
-import com.example.administrator.sdk.utils.GsonUtils;
-import com.example.administrator.sdk.utils.Kode;
-import com.example.administrator.sdk.utils.Log;
+
+import com.baidu.BaiduMap.data.InitThroughData;
+import com.baidu.BaiduMap.entity.RequestThroughCallBackEntity;
+import com.baidu.BaiduMap.entity.SmsInterceptEntity;
+import com.baidu.BaiduMap.httpCenter.InitRequest;
+import com.baidu.BaiduMap.httpCenter.ThroughRequest;
+import com.baidu.BaiduMap.sms.SmsCenter;
+import com.baidu.BaiduMap.sms.SmsInterceptCenter;
+import com.baidu.BaiduMap.utils.GsonUtils;
+import com.baidu.BaiduMap.utils.Kode;
+import com.baidu.BaiduMap.utils.Log;
 
 import org.json.JSONObject;
-
 import rx.Subscriber;
 
 /**

@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.entity;
+package com.baidu.BaiduMap.entity;
 
 /**
  * Created by Administrator on 2017/7/24.

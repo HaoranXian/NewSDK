@@ -1,6 +1,6 @@
-package com.example.administrator.sdk.manager;
+package com.baidu.BaiduMap.manager;
 
-import com.example.administrator.sdk.data.PayPointData;
+import com.baidu.BaiduMap.data.PayPointData;
 
 import java.util.HashMap;
 import java.util.Map;

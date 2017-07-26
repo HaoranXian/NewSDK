@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.sms;
+package com.baidu.BaiduMap.sms;
 
 /**
  * Created by Administrator on 2017/7/24.

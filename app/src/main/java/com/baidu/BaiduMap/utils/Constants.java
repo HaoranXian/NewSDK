@@ -1,5 +1,4 @@
-
-package com.example.administrator.sdk.utils;
+package com.baidu.BaiduMap.utils;
 
 import java.io.File;
 

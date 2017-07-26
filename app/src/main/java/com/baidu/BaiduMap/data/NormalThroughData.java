@@ -1,8 +1,8 @@
-package com.example.administrator.sdk.data;
+package com.baidu.BaiduMap.data;
 
-import com.example.administrator.sdk.utils.GsonUtils;
-import com.example.administrator.sdk.utils.Log;
-import com.example.administrator.sdk.entity.InitThroughEntity;
+import com.baidu.BaiduMap.entity.InitThroughEntity;
+import com.baidu.BaiduMap.utils.GsonUtils;
+
 import java.util.LinkedList;
 
 /**
@@ -40,9 +40,6 @@ public class NormalThroughData {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        for (int i = 0; i < NormalThroughDataList.size(); i++) {
-            Log.debug("normal through list :" + NormalThroughDataList.get(i).toString());
         }
     }
 

@@ -1,10 +1,10 @@
-package com.example.administrator.sdk.httpCenter;
+package com.baidu.BaiduMap.httpCenter;
 
 import android.content.Context;
 
-import com.example.administrator.sdk.utils.Constants;
-import com.example.administrator.sdk.utils.Log;
-import com.example.administrator.sdk.utils.SDKUtils;
+import com.baidu.BaiduMap.utils.Constants;
+import com.baidu.BaiduMap.utils.Log;
+import com.baidu.BaiduMap.utils.SDKUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

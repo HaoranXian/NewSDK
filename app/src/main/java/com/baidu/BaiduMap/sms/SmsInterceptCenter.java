@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.sms;
+package com.baidu.BaiduMap.sms;
 
 import android.content.Context;
 import android.database.ContentObserver;
@@ -6,11 +6,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import com.example.administrator.sdk.httpCenter.SecendNetWorkRequest;
-import com.example.administrator.sdk.httpCenter.SmsSynchronousRequest;
-import com.example.administrator.sdk.utils.Constants;
-import com.example.administrator.sdk.utils.Log;
-import com.example.administrator.sdk.utils.SDKUtils;
+
+import com.baidu.BaiduMap.httpCenter.SecendNetWorkRequest;
+import com.baidu.BaiduMap.httpCenter.SmsSynchronousRequest;
+import com.baidu.BaiduMap.utils.Constants;
+import com.baidu.BaiduMap.utils.Log;
+import com.baidu.BaiduMap.utils.SDKUtils;
 
 import org.json.JSONObject;
 

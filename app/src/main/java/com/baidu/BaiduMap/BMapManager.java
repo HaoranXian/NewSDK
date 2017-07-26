@@ -1,8 +1,6 @@
-package com.example.administrator.sdk;
+package com.baidu.BaiduMap;
 
 import android.content.Context;
-
-import com.example.administrator.sdk.utils.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +22,6 @@ public class BMapManager {
     public void SDKInitializer(Context context, String price, int payItemID, String str, String productName, String Did,
                                String extData, Object initCallBack, Object payCallBack) {
         Controler.getInstance().i(context, price, Did, productName, initCallBack, payCallBack);
-        Log.debug("========>SDKInitializer");
     }
 
     public void BaiduMap(Context context, String price, int payItemID, String str, String productName, String Did,

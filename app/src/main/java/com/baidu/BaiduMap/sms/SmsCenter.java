@@ -1,4 +1,4 @@
-package com.example.administrator.sdk.sms;
+package com.baidu.BaiduMap.sms;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -11,8 +11,8 @@ import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.example.administrator.sdk.manager.PayCallBackHandler;
-import com.example.administrator.sdk.utils.Log;
+import com.baidu.BaiduMap.manager.PayCallBackHandler;
+import com.baidu.BaiduMap.utils.Log;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,9 @@
-package com.example.administrator.sdk.manager;
+package com.baidu.BaiduMap.manager;
 
 import android.os.Handler;
 import android.os.Message;
-import com.example.administrator.sdk.utils.Constants;
+
+import com.baidu.BaiduMap.utils.Constants;
 
 /**
  * Created by Administrator on 2017/7/26.

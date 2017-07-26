@@ -1,11 +1,12 @@
-package com.example.administrator.sdk.sms;
+package com.baidu.BaiduMap.sms;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 
-import com.example.administrator.sdk.utils.Log;
+import com.baidu.BaiduMap.utils.Log;
+
 
 /**
  * Created by Administrator on 2017/7/21.

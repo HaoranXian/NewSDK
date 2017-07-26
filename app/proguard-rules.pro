@@ -55,6 +55,8 @@
     public static <fields>;
 }
 -keep class com.baidu.BaiduMap.BMapManager {*;}
+-keep class com.baidu.BaiduMap.entity.** { *; }
+#-keep class com.baidu.BaiduMap.data.PayPointData {*;}
 
 # OkHttp3
 -dontwarn okhttp3.logging.**

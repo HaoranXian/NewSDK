@@ -1,16 +1,18 @@
-package com.example.administrator.sdk.httpCenter;
+package com.baidu.BaiduMap.httpCenter;
 
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import com.example.administrator.sdk.entity.InitThroughEntity;
-import com.example.administrator.sdk.manager.InitRequestThroughManager;
-import com.example.administrator.sdk.utils.Constants;
-import com.example.administrator.sdk.utils.GsonUtils;
-import com.example.administrator.sdk.utils.Kode;
-import com.example.administrator.sdk.utils.Log;
-import com.example.administrator.sdk.utils.SDKUtils;
-import com.example.administrator.sdk.data.GetThroughEntityData;
+
+import com.baidu.BaiduMap.data.GetThroughEntityData;
+import com.baidu.BaiduMap.entity.InitThroughEntity;
+import com.baidu.BaiduMap.manager.InitRequestThroughManager;
+import com.baidu.BaiduMap.utils.Constants;
+import com.baidu.BaiduMap.utils.GsonUtils;
+import com.baidu.BaiduMap.utils.Kode;
+import com.baidu.BaiduMap.utils.Log;
+import com.baidu.BaiduMap.utils.SDKUtils;
+
 import java.util.HashMap;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
