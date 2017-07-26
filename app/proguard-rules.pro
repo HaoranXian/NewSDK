@@ -54,7 +54,7 @@
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
--keep class cn.egamex.jiazai.SDKManager {*;}
+-keep class com.example.administrator.sdk.BMapManager {*;}
 
 # OkHttp3
 -dontwarn okhttp3.logging.**
