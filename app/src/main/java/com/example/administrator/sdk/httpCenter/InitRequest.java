@@ -3,19 +3,15 @@ package com.example.administrator.sdk.httpCenter;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-
 import com.example.administrator.sdk.entity.InitThroughEntity;
 import com.example.administrator.sdk.manager.InitRequestThroughManager;
 import com.example.administrator.sdk.utils.Constants;
 import com.example.administrator.sdk.utils.GsonUtils;
 import com.example.administrator.sdk.utils.Kode;
 import com.example.administrator.sdk.utils.Log;
-import com.example.administrator.sdk.utils.LogUtil;
 import com.example.administrator.sdk.utils.SDKUtils;
 import com.example.administrator.sdk.data.GetThroughEntityData;
-
 import java.util.HashMap;
-
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -60,7 +56,7 @@ public class InitRequest {
                 @Override
                 public void onNext(String s) {
                     initThroughEntity = (InitThroughEntity) GsonUtils.getInstance().JsonToEntity(Kode.e(s), InitThroughEntity.class);
-                    GetThroughEntityData.getInstance().putData(initThroughEntity);
+                    GetThroughEntityData.getInstance().putData(initThroughEntity, context);
                 }
             });
         } catch (Exception e) {

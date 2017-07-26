@@ -2,16 +2,12 @@ package com.example.administrator.sdk.data;
 
 import android.content.Context;
 import android.text.TextUtils;
-
 import com.example.administrator.sdk.entity.InitThroughEntity;
 import com.example.administrator.sdk.utils.GsonUtils;
-import com.example.administrator.sdk.utils.Log;
 import com.example.administrator.sdk.utils.SDKUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +17,7 @@ import java.util.Map;
 
 public class PayPointData {
     private static PayPointData payPointData = null;
+    private static HashMap<String, Map<String, Object>> g = new HashMap<>();
 
     public static PayPointData getInstance() {
         if (payPointData == null) {
@@ -29,13 +26,12 @@ public class PayPointData {
         return payPointData;
     }
 
-    public void putData(InitThroughEntity t) {
+    public void putData(InitThroughEntity t, Context context) {
         String rows = GsonUtils.getInstance().EntityToJson(t.getRows());
-        Log.debug("=====>rows:" + rows);
-        payPoint(context, rows);
+        payPoint(rows, context);
     }
 
-    public static void payPoint(Context context, String s) {
+    private void payPoint(String s, Context context) {
         JSONObject oj;
         try {
             oj = new JSONObject(s.toString());
@@ -60,10 +56,17 @@ public class PayPointData {
                 }
                 map.put("dname", json.get("dname"));
                 map.put("isopen", json.get("isopen"));
-//                content.put(json.getString("did"), map);
+                g.put(json.getString("did"), map);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public HashMap<String, Map<String, Object>> getG() {
+        if (null != g && g.size() > 0) {
+            return g;
+        }
+        return null;
     }
 }

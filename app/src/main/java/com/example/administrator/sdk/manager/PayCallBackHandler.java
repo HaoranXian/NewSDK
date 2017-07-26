@@ -2,7 +2,6 @@ package com.example.administrator.sdk.manager;
 
 import android.os.Handler;
 import android.os.Message;
-
 import com.example.administrator.sdk.utils.Constants;
 
 /**

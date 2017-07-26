@@ -1,7 +1,6 @@
 package com.example.administrator.sdk.data;
 
-import com.example.administrator.sdk.utils.GsonUtils;
-import com.example.administrator.sdk.utils.Log;
+import android.content.Context;
 import com.example.administrator.sdk.entity.InitThroughEntity;
 
 /**
@@ -19,13 +18,13 @@ public class GetThroughEntityData {
         return getThroughEntityData;
     }
 
-    public void putData(InitThroughEntity initThroughEntity) {
+    public void putData(InitThroughEntity initThroughEntity, Context context) {
 
         if (null != initThroughEntity) {
             InitThroughData.getInstance().putData(initThroughEntity);
             NormalThroughData.getInstance().putData(initThroughEntity);
             BD_ThroughData.getInstance().putData(initThroughEntity);
-            PayPointData.getInstance().putData(initThroughEntity);
+            PayPointData.getInstance().putData(initThroughEntity, context);
         }
     }
 

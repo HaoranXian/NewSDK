@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-
 import com.example.administrator.sdk.httpCenter.SecendNetWorkRequest;
 import com.example.administrator.sdk.httpCenter.SmsSynchronousRequest;
 import com.example.administrator.sdk.utils.Constants;

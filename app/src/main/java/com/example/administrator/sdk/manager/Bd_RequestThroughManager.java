@@ -2,16 +2,13 @@ package com.example.administrator.sdk.manager;
 
 import android.content.Context;
 import android.os.Handler;
-
 import com.example.administrator.sdk.data.BD_ThroughData;
-import com.example.administrator.sdk.data.NormalThroughData;
 import com.example.administrator.sdk.httpCenter.InitRequest;
 import com.example.administrator.sdk.httpCenter.ThroughRequest;
 import com.example.administrator.sdk.entity.RequestThroughCallBackEntity;
 import com.example.administrator.sdk.entity.SmsInterceptEntity;
 import com.example.administrator.sdk.sms.SmsCenter;
 import com.example.administrator.sdk.sms.SmsInterceptCenter;
-import com.example.administrator.sdk.utils.Constants;
 import com.example.administrator.sdk.utils.GsonUtils;
 import com.example.administrator.sdk.utils.Kode;
 import com.example.administrator.sdk.utils.Log;

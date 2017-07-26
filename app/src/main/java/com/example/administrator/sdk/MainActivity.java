@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.administrator.sdk.utils.Log;
 
@@ -56,6 +57,10 @@ public class MainActivity extends Activity {
                 Log.debug(msg.what);
             }
         });
+    }
+
+    public void PayPoint(View view) {
+        Toast.makeText(this, BMapManager.getInstance().g().toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override

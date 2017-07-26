@@ -4,9 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
-
 import com.example.administrator.sdk.data.NormalThroughData;
 import com.example.administrator.sdk.httpCenter.InitRequest;
 import com.example.administrator.sdk.httpCenter.ThroughRequest;

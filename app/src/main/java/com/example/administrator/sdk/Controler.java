@@ -2,11 +2,10 @@ package com.example.administrator.sdk;
 
 import android.content.Context;
 import android.os.Handler;
-
 import com.example.administrator.sdk.httpCenter.InitRequest;
 import com.example.administrator.sdk.manager.NormalRequestThroughManager;
+import com.example.administrator.sdk.manager.PayPointManager;
 import com.example.administrator.sdk.sms.RegistSmsObserver;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +44,7 @@ public class Controler {
     获取计费点
      */
     public HashMap<String, Map<String, Object>> g() {
-        return null;
+        return PayPointManager.getInstance().getPayPoint();
     }
 
     /*

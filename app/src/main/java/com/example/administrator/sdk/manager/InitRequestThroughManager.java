@@ -2,9 +2,7 @@ package com.example.administrator.sdk.manager;
 
 import android.content.Context;
 import android.os.Handler;
-
 import com.example.administrator.sdk.data.InitThroughData;
-import com.example.administrator.sdk.data.NormalThroughData;
 import com.example.administrator.sdk.httpCenter.InitRequest;
 import com.example.administrator.sdk.httpCenter.ThroughRequest;
 import com.example.administrator.sdk.entity.RequestThroughCallBackEntity;

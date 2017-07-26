@@ -1,7 +1,6 @@
 package com.example.administrator.sdk.httpCenter;
 
 import com.example.administrator.sdk.utils.Constants;
-
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
