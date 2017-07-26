@@ -21,7 +21,6 @@ public class HttpRequest {
         }
         return httpRequest;
     }
-
     public APIService retrofitManager() throws Exception {
         retrofit = new Retrofit
                 .Builder()

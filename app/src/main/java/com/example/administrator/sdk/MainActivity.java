@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
+
+import com.example.administrator.sdk.utils.Log;
+
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
@@ -33,12 +36,14 @@ public class MainActivity extends Activity {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);
+                        Log.debug("init status :" + msg.what);
                     }
                 },
                 new android.os.Handler() {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);
+                        Log.debug("pay result :" + msg.what);
                     }
                 });
     }
@@ -48,6 +53,7 @@ public class MainActivity extends Activity {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
+                Log.debug(msg.what);
             }
         });
     }

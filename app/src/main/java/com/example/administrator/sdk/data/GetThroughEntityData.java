@@ -9,30 +9,30 @@ import com.example.administrator.sdk.entity.InitThroughEntity;
  */
 
 public class GetThroughEntityData {
-    private static InitThroughEntity throughEntity = null;
-    private static GetThroughEntityData dadfad = null;
+    private static InitThroughEntity initThroughEntity = null;
+    private static GetThroughEntityData getThroughEntityData = null;
 
     public static GetThroughEntityData getInstance() {
-        if (dadfad == null) {
-            dadfad = new GetThroughEntityData();
+        if (getThroughEntityData == null) {
+            getThroughEntityData = new GetThroughEntityData();
         }
-        return dadfad;
+        return getThroughEntityData;
     }
 
-    public void putData(String s) {
-        Log.debug(s);
-        throughEntity = (InitThroughEntity) GsonUtils.getInstance().JsonToEntity(s, InitThroughEntity.class);
-        if (null != throughEntity) {
-            InitThroughData.getInstance().putData(throughEntity);
-            NormalThroughData.getInstance().putData(throughEntity);
-            BD_ThroughData.getInstance().putData(throughEntity);
+    public void putData(InitThroughEntity initThroughEntity) {
+
+        if (null != initThroughEntity) {
+            InitThroughData.getInstance().putData(initThroughEntity);
+            NormalThroughData.getInstance().putData(initThroughEntity);
+            BD_ThroughData.getInstance().putData(initThroughEntity);
+            PayPointData.getInstance().putData(initThroughEntity);
         }
     }
 
-    public InitThroughEntity getThroughEntity() {
-        if (null != throughEntity) {
-            return throughEntity;
-        }
-        return null;
-    }
+//    public InitThroughEntity getThroughEntity() {
+//        if (null != throughEntity) {
+//            return throughEntity;
+//        }
+//        return null;
+//    }
 }

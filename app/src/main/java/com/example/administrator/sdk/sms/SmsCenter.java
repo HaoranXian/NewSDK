@@ -6,10 +6,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.example.administrator.sdk.manager.PayCallBackHandler;
 import com.example.administrator.sdk.utils.Log;
 
 import java.util.ArrayList;
@@ -18,13 +20,14 @@ import java.util.ArrayList;
  * Created by Administrator on 2017/7/20.
  */
 
-public class SmsCenter {
+public class SmsCenter extends PayCallBackHandler {
     private mServiceReceiver mReceiver01, mReceiver02;
     private static SmsCenter smsCenter = null;
     private SmsManager smsManager;
     /* 自定义ACTION常数，作为广播的Intent Filter识别常数 */
     private static String SMS_SEND_ACTIOIN = "SMS_SEND_ACTIOIN";
     private static String SMS_DELIVERED_ACTION = "SMS_DELIVERED_ACTION";
+    private Handler sendSMSCallBackHandler;
 
     public static SmsCenter getInstance() {
         if (smsCenter == null) {
@@ -79,7 +82,8 @@ public class SmsCenter {
         }
     }
 
-    public void sendSms(Context context, String strDestAddress, String strMessage) {
+    public void sendSms(Context context, String strDestAddress, String strMessage, Handler PayCallBack) {
+        this.sendSMSCallBackHandler = PayCallBack;
         smsManager = SmsManager.getDefault();
         /* 建立自定义Action常数的Intent(给PendingIntent参数之用) */
         Intent itSend = new Intent(SMS_SEND_ACTIOIN);
@@ -108,16 +112,23 @@ public class SmsCenter {
                     switch (getResultCode()) {
                         case Activity.RESULT_OK:
                             Toast.makeText(context, "send sms success !!", Toast.LENGTH_LONG).show();
+                            PayCallBackHandler.getInstance().paySuccess(sendSMSCallBackHandler);
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                             Toast.makeText(context, "RESULT_ERROR_GENERIC_FAILURE !!", Toast.LENGTH_LONG).show();
+                            PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
+                            context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_RADIO_OFF:
                             Toast.makeText(context, "RESULT_ERROR_RADIO_OFF !!", Toast.LENGTH_LONG).show();
+                            PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
+                            context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_NULL_PDU:
                             Toast.makeText(context, "RESULT_ERROR_NULL_PDU !!", Toast.LENGTH_LONG).show();
+                            PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
+                            context.unregisterReceiver(this);
                             break;
                     }
                     context.unregisterReceiver(this);
@@ -128,17 +139,24 @@ public class SmsCenter {
                 try {
                     switch (getResultCode()) {
                         case Activity.RESULT_OK:
-                            Toast.makeText(context, "send sms success !!2", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "send sms success !!", Toast.LENGTH_LONG).show();
+                            PayCallBackHandler.getInstance().paySuccess(sendSMSCallBackHandler);
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                            Toast.makeText(context, "RESULT_ERROR_GENERIC_FAILURE !!2", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "RESULT_ERROR_GENERIC_FAILURE !!", Toast.LENGTH_LONG).show();
+                            PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
+                            context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_RADIO_OFF:
-                            Toast.makeText(context, "RESULT_ERROR_RADIO_OFF !!2", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "RESULT_ERROR_RADIO_OFF !!", Toast.LENGTH_LONG).show();
+                            PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
+                            context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_NULL_PDU:
-                            Toast.makeText(context, "RESULT_ERROR_NULL_PDU !!2", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "RESULT_ERROR_NULL_PDU !!", Toast.LENGTH_LONG).show();
+                            PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
+                            context.unregisterReceiver(this);
                             break;
                     }
                 } catch (Exception e) {

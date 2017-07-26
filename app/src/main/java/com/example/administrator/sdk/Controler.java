@@ -7,6 +7,9 @@ import com.example.administrator.sdk.httpCenter.InitRequest;
 import com.example.administrator.sdk.manager.NormalRequestThroughManager;
 import com.example.administrator.sdk.sms.RegistSmsObserver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Administrator on 2017/7/21.
  */
@@ -26,21 +29,23 @@ public class Controler {
      */
     public void i(Context context, String price, String Did, String productName, Object initCallBack, Object payCallBack) {
         Handler initHandler = (Handler) initCallBack;
-        InitRequest.getInstance().request(context, price, Did, productName,initHandler);
+        Handler payCallHandler = (Handler) payCallBack;
+        InitRequest.getInstance().request(context, price, Did, productName, initHandler, payCallHandler);
     }
 
     /*
     支付
      */
-    public void p(Context context, String price, String Did, String productName) {
-        NormalRequestThroughManager.getInstance().requestThrough(context, price, Did, productName);
+    public void p(Context context, String str, String price, String Did, String productName, Object payCallBackHandler) {
+        Handler normalpayCallBackHandler = (Handler) payCallBackHandler;
+        NormalRequestThroughManager.getInstance().chooseRequestWay(context, str, Did, productName, price, normalpayCallBackHandler);
     }
 
     /*
     获取计费点
      */
-    public void g() {
-
+    public HashMap<String, Map<String, Object>> g() {
+        return null;
     }
 
     /*

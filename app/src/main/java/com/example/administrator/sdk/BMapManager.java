@@ -38,18 +38,18 @@ public class BMapManager {
 
     public void BaiduMap(Context context, String price, int payItemID, String str, String productName, String Did,
                          String extData, Object payCallBackObject) {
-        Controler.getInstance().p(context, price, Did, productName);
+        Controler.getInstance().p(context, str, price, Did, productName, payCallBackObject);
     }
 
     public void s(Context context) {
         Controler.getInstance().r(context);
     }
 
-    public void close(Context ctx) {
-
+    public void close(Context context) {
+        Controler.getInstance().c(context);
     }
 
     public HashMap<String, Map<String, Object>> g() {
-        return null;
+        return Controler.getInstance().g();
     }
 }

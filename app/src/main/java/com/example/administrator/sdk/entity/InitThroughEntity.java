@@ -44,7 +44,7 @@ public class InitThroughEntity {
     private String phone2;
     private boolean isOpenPay_month;
     private int bd_times;
-    private boolean bd_Isapply;
+    private boolean isapply;
     private boolean isOpen_jifei;
     private List<Rows> rows;
 
@@ -68,8 +68,8 @@ public class InitThroughEntity {
     }
 
 
-    public boolean isBd_Isapply() {
-        return bd_Isapply;
+    public boolean getIsapply() {
+        return isapply;
     }
 
 

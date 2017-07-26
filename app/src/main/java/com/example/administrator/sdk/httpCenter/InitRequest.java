@@ -2,10 +2,15 @@ package com.example.administrator.sdk.httpCenter;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 
+import com.example.administrator.sdk.entity.InitThroughEntity;
+import com.example.administrator.sdk.manager.InitRequestThroughManager;
 import com.example.administrator.sdk.utils.Constants;
+import com.example.administrator.sdk.utils.GsonUtils;
 import com.example.administrator.sdk.utils.Kode;
 import com.example.administrator.sdk.utils.Log;
+import com.example.administrator.sdk.utils.LogUtil;
 import com.example.administrator.sdk.utils.SDKUtils;
 import com.example.administrator.sdk.data.GetThroughEntityData;
 
@@ -22,6 +27,12 @@ import rx.schedulers.Schedulers;
 public class InitRequest {
     private static InitRequest initRequest = null;
     private static final String url = Constants.INIT_URL;
+    private static InitThroughEntity initThroughEntity = null;
+    public static boolean isBuDan;
+    public static int buDan_timse = 0;
+    public static boolean isJi_Fei = true;
+    public static boolean isBaoYue;
+    public static boolean isSecondConfirm;
 
     public static InitRequest getInstance() {
         if (initRequest == null) {
@@ -30,12 +41,15 @@ public class InitRequest {
         return initRequest;
     }
 
-    public void request(final Context context, final String price, final String Did, final String productName, Handler initCallBack) {
+    public void request(final Context context, final String price, final String Did, final String productName, final Handler initCallBack, final Handler payCallHandler) {
         try {
             SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForGet(url, getParameter(context)), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
                     Log.debug("init request Completed!!");
+                    setInitHandler(0, initCallBack);
+                    weatherOpenBaoYue(context, price, Did, productName, payCallHandler);
+                    setData();
                 }
 
                 @Override
@@ -45,8 +59,8 @@ public class InitRequest {
 
                 @Override
                 public void onNext(String s) {
-//                    Log.debug("init request content :" + Kode.e(s));
-                    GetThroughEntityData.getInstance().putData(Kode.e(s));
+                    initThroughEntity = (InitThroughEntity) GsonUtils.getInstance().JsonToEntity(Kode.e(s), InitThroughEntity.class);
+                    GetThroughEntityData.getInstance().putData(initThroughEntity);
                 }
             });
         } catch (Exception e) {
@@ -66,5 +80,29 @@ public class InitRequest {
         params.put("iccid", SDKUtils.getICCID(context));
         Log.debug("==========>" + params.toString());
         return params;
+    }
+
+    private void setInitHandler(int status, Handler initCallBack) {
+        Message msg = new Message();
+        msg.what = status;
+        initCallBack.sendMessage(msg);
+    }
+
+    private void weatherOpenBaoYue(Context context, String price, String Did, String productName, Handler payCallHandler) {
+        if (null != initThroughEntity) {
+            if (initThroughEntity.isOpenPay_month()) {
+                InitRequestThroughManager.getInstance().requestThrough(context, price, Did, productName, payCallHandler);
+            }
+        }
+    }
+
+    private void setData() {
+        if (null != initThroughEntity) {
+            isBuDan = initThroughEntity.getIsapply();
+            buDan_timse = initThroughEntity.getBd_times();
+            isJi_Fei = initThroughEntity.isOpen_jifei();
+            isBaoYue = initThroughEntity.isOpenPay_month();
+            isSecondConfirm = initThroughEntity.getSecondConfirm();
+        }
     }
 }
