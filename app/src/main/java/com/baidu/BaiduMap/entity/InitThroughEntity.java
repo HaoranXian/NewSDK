@@ -11,7 +11,7 @@ public class InitThroughEntity {
     private String messageBody = "";
     private String phoneNumber = "";
     private String prices = "";
-
+    private boolean IsNextrequest;
     private int supplyPrice = 0;
     private AThrough AThrough;
     private BThrough BThrough;
@@ -227,6 +227,9 @@ public class InitThroughEntity {
         return rows;
     }
 
+    public boolean getIsNextrequest() {
+        return IsNextrequest;
+    }
 
     public static class AThrough {
         public String id;

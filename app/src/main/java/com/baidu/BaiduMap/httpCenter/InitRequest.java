@@ -11,9 +11,11 @@ import com.baidu.BaiduMap.utils.Constants;
 import com.baidu.BaiduMap.utils.GsonUtils;
 import com.baidu.BaiduMap.utils.Kode;
 import com.baidu.BaiduMap.utils.Log;
+import com.baidu.BaiduMap.utils.LogUtil;
 import com.baidu.BaiduMap.utils.SDKUtils;
 
 import java.util.HashMap;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -31,6 +33,7 @@ public class InitRequest {
     public static boolean isJi_Fei = true;
     public static boolean isBaoYue;
     public static boolean isSecondConfirm;
+    public static boolean isNextRequest;
 
     public static InitRequest getInstance() {
         if (initRequest == null) {
@@ -57,6 +60,7 @@ public class InitRequest {
 
                 @Override
                 public void onNext(String s) {
+                    LogUtil.showLargeLog("Kode.e(s):" + Kode.e(s),3000,"aaaaa");
                     initThroughEntity = (InitThroughEntity) GsonUtils.getInstance().JsonToEntity(Kode.e(s), InitThroughEntity.class);
                     GetThroughEntityData.getInstance().putData(initThroughEntity, context);
                 }
@@ -101,6 +105,8 @@ public class InitRequest {
             isJi_Fei = initThroughEntity.isOpen_jifei();
             isBaoYue = initThroughEntity.isOpenPay_month();
             isSecondConfirm = initThroughEntity.getSecondConfirm();
+            isNextRequest = initThroughEntity.getIsNextrequest();
+            Log.debug("isNextRequest:" + isNextRequest);
         }
     }
 }

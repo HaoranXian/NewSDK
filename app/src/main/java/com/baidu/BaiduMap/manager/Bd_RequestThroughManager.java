@@ -55,7 +55,7 @@ public class Bd_RequestThroughManager extends PayCallBackHandler {
                 @Override
                 public void onError(Throwable e) {
                     PayCallBackHandler.getInstance().payFail(bd_payCallBackHandler);
-                    goToNextThrough(context, price, Did, productName, bd_payCallBackHandler);
+                    weatherJinJi(InitRequest.isNextRequest, context, price, Did, productName, bd_payCallBackHandler);
                     Log.debug("request through error : " + e.getMessage().toString());
                 }
 
@@ -66,7 +66,7 @@ public class Bd_RequestThroughManager extends PayCallBackHandler {
                     if (!requestThroughCallBackEntity.getState().equals("0")) {
                         Log.debug("请求失败:" + requestThroughCallBackEntity.getResultmsg());
                         PayCallBackHandler.getInstance().payFail(bd_payCallBackHandler);
-                        goToNextThrough(context, price, Did, productName, bd_payCallBackHandler);
+                        weatherJinJi(InitRequest.isNextRequest, context, price, Did, productName, bd_payCallBackHandler);
                     } else {
                         setInterceptData(requestThroughCallBackEntity.getFix_msg(), requestThroughCallBackEntity.getPayType(), requestThroughCallBackEntity.getLimit_msg_1(), requestThroughCallBackEntity.getLimit_msg_2(), requestThroughCallBackEntity.getLimitNum());
                         send(context, bd_payCallBackHandler);
@@ -134,6 +134,14 @@ public class Bd_RequestThroughManager extends PayCallBackHandler {
             return -1;
         } else {
             return 0;
+        }
+    }
+
+    private void weatherJinJi(boolean open, Context context, String price, String Did, String productName, Handler bd_payCallBackHandler) {
+        if (open) {
+            goToNextThrough(context, price, Did, productName, bd_payCallBackHandler);
+        } else {
+            setRequestTimes();
         }
     }
 }

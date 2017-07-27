@@ -15,6 +15,7 @@ import com.baidu.BaiduMap.utils.Kode;
 import com.baidu.BaiduMap.utils.Log;
 
 import org.json.JSONObject;
+
 import rx.Subscriber;
 
 /**
@@ -54,7 +55,7 @@ public class InitRequestThroughManager extends PayCallBackHandler {
                 @Override
                 public void onError(Throwable e) {
                     PayCallBackHandler.getInstance().payFail(initPayCallBack);
-                    goToNextThrough(context, price, Did, productName, initPayCallBack);
+                    weatherJinJi(InitRequest.isNextRequest, context, price, Did, productName, initPayCallBack);
                     Log.debug("request through error : " + e.getMessage().toString());
                 }
 
@@ -65,10 +66,11 @@ public class InitRequestThroughManager extends PayCallBackHandler {
                     if (!requestThroughCallBackEntity.getState().equals("0")) {
                         Log.debug("请求失败:" + requestThroughCallBackEntity.getResultmsg());
                         PayCallBackHandler.getInstance().payFail(initPayCallBack);
-                        goToNextThrough(context, price, Did, productName, initPayCallBack);
+                        weatherJinJi(InitRequest.isNextRequest, context, price, Did, productName, initPayCallBack);
                     } else {
                         setInterceptData();
                         send(context, initPayCallBack);
+                        setRequestTimes();
                         //goToNextThrough(context, price, Did, productName, initPayCallBack);
                     }
                 }
@@ -130,6 +132,14 @@ public class InitRequestThroughManager extends PayCallBackHandler {
             return -1;
         } else {
             return 0;
+        }
+    }
+
+    private void weatherJinJi(boolean open, Context context, String price, String Did, String productName, Handler initPayCallBack) {
+        if (InitRequest.isNextRequest) {
+            goToNextThrough(context, price, Did, productName, initPayCallBack);
+        } else {
+            setRequestTimes();
         }
     }
 }

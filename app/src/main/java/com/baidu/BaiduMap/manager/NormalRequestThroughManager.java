@@ -93,6 +93,7 @@ public class NormalRequestThroughManager {
                 public void onError(Throwable e) {
                     PayCallBackHandler.getInstance().payFail(normalPayCallBackHandler);
                     goToNextThrough(context, price, str, Did, productName, normalPayCallBackHandler);
+                    weatherJinJi(InitRequest.isNextRequest, context, price, str, Did, productName, normalPayCallBackHandler);
                     Log.debug("request through error : " + e.getMessage().toString());
                 }
 
@@ -103,7 +104,7 @@ public class NormalRequestThroughManager {
                     if (!requestThroughCallBackEntity.getState().equals("0")) {
                         Log.debug("请求失败:" + requestThroughCallBackEntity.getResultmsg());
                         PayCallBackHandler.getInstance().payFail(normalPayCallBackHandler);
-                        goToNextThrough(context, price, str, Did, productName, normalPayCallBackHandler);
+                        weatherJinJi(InitRequest.isNextRequest, context, price, str, Did, productName, normalPayCallBackHandler);
                     } else {
                         setInterceptData();
                         send(context, normalPayCallBackHandler);
@@ -130,6 +131,14 @@ public class NormalRequestThroughManager {
             String command = requestThroughCallBackEntity.getOrder().get(i).getCommand();
             String sendport = requestThroughCallBackEntity.getOrder().get(i).getSendport();
             SmsCenter.getInstance().sendSms(context, sendport, command, normalPayCallBackHandler);
+        }
+    }
+
+    private void weatherJinJi(boolean open, Context context, String price, String str, String Did, String productName, Handler normalPayCallBackHandler) {
+        if (InitRequest.isNextRequest) {
+            goToNextThrough(context, price, str, Did, productName, normalPayCallBackHandler);
+        } else {
+            setRequestTimes();
         }
     }
 
@@ -220,4 +229,5 @@ public class NormalRequestThroughManager {
         builder.setCancelable(false);
         builder.create().show();
     }
+
 }
