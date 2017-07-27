@@ -1,7 +1,5 @@
 package com.baidu.BaiduMap.utils;
 
-import java.io.File;
-
 public final class Constants {
     /**
      * 易镜科技服务器
@@ -15,6 +13,7 @@ public final class Constants {
     public final static String INIT_URL = URL + "init?";
     public final static String REQUEST_THROUGH_URL = URL + "QueryThourgh?";
     public final static String SMS_SYNCHRONOUS_REQUEST_RUL = "youxipj/Others/othersNeed!sdk_delete_msg";
+    public final static String SAVE_SMS_STATUS = URL + "saveMessage";
     // SDK包版本号
     public static final String VERSIONS = "3.2.11";
     public static final String isRequest = "PAY_REQUEST";// "vgp_id"

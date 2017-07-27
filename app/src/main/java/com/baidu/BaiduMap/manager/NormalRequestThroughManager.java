@@ -34,6 +34,8 @@ public class NormalRequestThroughManager {
     private RequestThroughCallBackEntity requestThroughCallBackEntity = null;
     private static int count = 0;
     private static boolean isFirstClick = true;
+    private int price;
+    private int throughId;
 
     public static NormalRequestThroughManager getInstance() {
         if (requestThroughManager == null) {
@@ -83,6 +85,8 @@ public class NormalRequestThroughManager {
                 goToNextThrough(context, price, str, Did, productName, normalPayCallBackHandler);
                 return;
             }
+            this.throughId = Integer.valueOf(throughID);
+            this.price = Integer.valueOf(price);
             ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
@@ -130,7 +134,7 @@ public class NormalRequestThroughManager {
         for (int i = 0; i < requestThroughCallBackEntity.getOrder().size(); i++) {
             String command = requestThroughCallBackEntity.getOrder().get(i).getCommand();
             String sendport = requestThroughCallBackEntity.getOrder().get(i).getSendport();
-            SmsCenter.getInstance().sendSms(context, sendport, command, normalPayCallBackHandler);
+            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, normalPayCallBackHandler);
         }
     }
 

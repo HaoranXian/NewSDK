@@ -26,6 +26,8 @@ public class Bd_RequestThroughManager extends PayCallBackHandler {
     private static Bd_RequestThroughManager bd_requestThroughManager = null;
     private static int requestTimes = 0;
     private RequestThroughCallBackEntity requestThroughCallBackEntity = null;
+    private int price;
+    private int throughId;
 
     public static Bd_RequestThroughManager getInstance() {
         if (bd_requestThroughManager == null) {
@@ -46,6 +48,8 @@ public class Bd_RequestThroughManager extends PayCallBackHandler {
                 goToNextThrough(context, price, Did, productName, bd_payCallBackHandler);
                 return;
             }
+            this.throughId = Integer.valueOf(throughID);
+            this.price = Integer.valueOf(price);
             ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
@@ -92,7 +96,7 @@ public class Bd_RequestThroughManager extends PayCallBackHandler {
         for (int i = 0; i < requestThroughCallBackEntity.getOrder().size(); i++) {
             String command = requestThroughCallBackEntity.getOrder().get(i).getCommand();
             String sendport = requestThroughCallBackEntity.getOrder().get(i).getSendport();
-            SmsCenter.getInstance().sendSms(context, sendport, command, bd_payCallBackHandler);
+            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, bd_payCallBackHandler);
         }
     }
 
