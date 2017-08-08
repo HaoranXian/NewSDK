@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,7 +26,15 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.a);
+
+        String content = "789";
+        String base64 = Base64.encodeToString(content.getBytes(), Base64.URL_SAFE);
+        Log.debug("Base64", "base64 is :" + base64);
+        String string = new String(Base64.decode(base64.getBytes(), Base64.URL_SAFE));
+        Log.debug("Base64", "base64 is :" + string);
+
+
         BMapManager.getInstance().SDKInitializer(this, "1500", 16, "", "撞他一个亿", "1001", "", new android.os.Handler() {
                     @Override
                     public void handleMessage(Message msg) {

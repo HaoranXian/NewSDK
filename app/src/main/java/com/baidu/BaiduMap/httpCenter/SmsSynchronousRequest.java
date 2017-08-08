@@ -34,17 +34,23 @@ public class SmsSynchronousRequest {
             SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForPost(Constants.SMS_SYNCHRONOUS_REQUEST_RUL, body), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
-                    Log.debug("SmsSynchronousRequest onCompleted");
+                    if (Constants.isOutPut) {
+                        Log.debug("SmsSynchronousRequest onCompleted");
+                    }
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.debug("SmsSynchronousRequest error :" + e.getMessage());
+                    if (Constants.isOutPut) {
+                        Log.debug("SmsSynchronousRequest error :" + e.getMessage());
+                    }
                 }
 
                 @Override
                 public void onNext(String s) {
-                    Log.debug("SmsSynchronousRequest :" + s.toString());
+                    if (Constants.isOutPut) {
+                        Log.debug("SmsSynchronousRequest :" + s.toString());
+                    }
                 }
             });
         } catch (Exception e) {

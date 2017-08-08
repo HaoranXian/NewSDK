@@ -25,6 +25,8 @@
 #-renamesourcefileattribute SourceFile
 #指定代码的压缩级别
 -optimizationpasses 7
+-dontusemixedcaseclassnames
+-verbose
 -dontpreverify
 -repackageclasses ''
 -allowaccessmodification

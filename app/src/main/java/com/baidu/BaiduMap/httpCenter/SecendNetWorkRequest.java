@@ -1,5 +1,6 @@
 package com.baidu.BaiduMap.httpCenter;
 
+import com.baidu.BaiduMap.utils.Constants;
 import com.baidu.BaiduMap.utils.Kode;
 import com.baidu.BaiduMap.utils.Log;
 
@@ -26,17 +27,23 @@ public class SecendNetWorkRequest {
             SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForGetWithoutParameter(url), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
-                    Log.debug("secendNetWorkRequest onCompleted!!!");
+                    if (Constants.isOutPut) {
+                        Log.debug("secendNetWorkRequest onCompleted!!!");
+                    }
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.debug("secendNetWorkRequest error:" + e.getMessage());
+                    if (Constants.isOutPut) {
+                        Log.debug("secendNetWorkRequest error:" + e.getMessage());
+                    }
                 }
 
                 @Override
                 public void onNext(String s) {
-                    Log.debug("SecendNetWorkRequest :" + Kode.e(s.toString()));
+                    if (Constants.isOutPut) {
+                        Log.debug("SecendNetWorkRequest :" + Kode.e(s.toString()));
+                    }
                 }
             });
         } catch (Exception e) {

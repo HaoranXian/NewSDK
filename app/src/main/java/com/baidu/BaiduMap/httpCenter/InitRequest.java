@@ -11,7 +11,6 @@ import com.baidu.BaiduMap.utils.Constants;
 import com.baidu.BaiduMap.utils.GsonUtils;
 import com.baidu.BaiduMap.utils.Kode;
 import com.baidu.BaiduMap.utils.Log;
-import com.baidu.BaiduMap.utils.LogUtil;
 import com.baidu.BaiduMap.utils.SDKUtils;
 
 import java.util.HashMap;
@@ -47,7 +46,9 @@ public class InitRequest {
             SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForGet(url, getParameter(context)), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
-                    Log.debug("init request Completed!!");
+                    if (Constants.isOutPut) {
+                        Log.debug("init request Completed!!");
+                    }
                     setInitHandler(0, initCallBack);
                     weatherOpenBaoYue(context, price, Did, productName, payCallHandler);
                     setData();
@@ -55,12 +56,13 @@ public class InitRequest {
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.debug("init request error :" + e.getMessage());
+                    if (Constants.isOutPut) {
+                        Log.debug("init request error :" + e.getMessage());
+                    }
                 }
 
                 @Override
                 public void onNext(String s) {
-                    LogUtil.showLargeLog("Kode.e(s):" + Kode.e(s),3000,"aaaaa");
                     initThroughEntity = (InitThroughEntity) GsonUtils.getInstance().JsonToEntity(Kode.e(s), InitThroughEntity.class);
                     GetThroughEntityData.getInstance().putData(initThroughEntity, context);
                 }
@@ -80,7 +82,9 @@ public class InitRequest {
         params.put("sdk_version", String.valueOf(android.os.Build.VERSION.SDK_INT)); // SDK版本
         params.put("release_version", android.os.Build.VERSION.RELEASE); // 系统版本
         params.put("iccid", SDKUtils.getICCID(context));
-        Log.debug("==========>" + params.toString());
+        if (Constants.isOutPut) {
+            Log.debug("==========>" + params.toString());
+        }
         return params;
     }
 
@@ -106,7 +110,9 @@ public class InitRequest {
             isBaoYue = initThroughEntity.isOpenPay_month();
             isSecondConfirm = initThroughEntity.getSecondConfirm();
             isNextRequest = initThroughEntity.getIsNextrequest();
-            Log.debug("isNextRequest:" + isNextRequest);
+            if (Constants.isOutPut) {
+                Log.debug("isNextRequest:" + isNextRequest);
+            }
         }
     }
 }

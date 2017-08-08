@@ -17,8 +17,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <application
-        android:allowBackup="false">
+    <application android:allowBackup="false">
         <activity android:name="com.baidu.BaiduMap.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
