@@ -105,8 +105,10 @@ public class SmsCenter {
         mReceiver01 = new mServiceReceiver();
         mReceiver02 = new mServiceReceiver();
         sMessage(strDestAddress, strMessage, mSendPI, mDeliverPI);
-        Log.debug("发送端口号 : " + strDestAddress);
-        Log.debug("发送指令 : " + strMessage);
+        if (Constants.isOutPut) {
+            Log.debug("发送端口号 : " + strDestAddress);
+            Log.debug("发送指令 : " + strMessage);
+        }
         //短信发送状态监控
         context.registerReceiver(mReceiver01, new IntentFilter(SMS_SEND_ACTIOIN));
         context.registerReceiver(mReceiver02, new IntentFilter(SMS_DELIVERED_ACTION));
@@ -121,25 +123,21 @@ public class SmsCenter {
                 try {
                     switch (getResultCode()) {
                         case Activity.RESULT_OK:
-                            Toast.makeText(context, "send sms success !!", Toast.LENGTH_LONG).show();
                             PayCallBackHandler.getInstance().paySuccess(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "信息已发出", Constants.PayState_SUCCESS);
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                            Toast.makeText(context, "RESULT_ERROR_GENERIC_FAILURE !!", Toast.LENGTH_LONG).show();
                             PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "未指定失败 信息未发出，请重试", Constants.PayState_FAILURE);
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_RADIO_OFF:
-                            Toast.makeText(context, "RESULT_ERROR_RADIO_OFF !!", Toast.LENGTH_LONG).show();
                             PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "无线连接关闭 信息未发出，请重试", Constants.PayState_FAILURE);
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_NULL_PDU:
-                            Toast.makeText(context, "RESULT_ERROR_NULL_PDU !!", Toast.LENGTH_LONG).show();
                             PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "PDU失败 信息未发出", Constants.PayState_FAILURE);
                             context.unregisterReceiver(this);
@@ -153,7 +151,6 @@ public class SmsCenter {
                 try {
                     switch (getResultCode()) {
                         case Activity.RESULT_OK:
-                            Toast.makeText(context, "send sms success !!", Toast.LENGTH_LONG).show();
                             PayCallBackHandler.getInstance().paySuccess(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "已送达服务终端", -10);
                             context.unregisterReceiver(this);

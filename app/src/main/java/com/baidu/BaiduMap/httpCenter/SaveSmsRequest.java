@@ -31,23 +31,31 @@ public class SaveSmsRequest {
 
     public void request(Context context, String mobile, String msg, int price, int throughId, String did, int successornot) {
         try {
-            Log.debug("======>url :" + Constants.SERVER_URL + Constants.SAVE_SMS_STATUS);
+            if (Constants.isOutPut) {
+                Log.debug("======>url :" + Constants.SERVER_URL + Constants.SAVE_SMS_STATUS);
+            }
             RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), Kode.a(getRequestData(context, mobile, msg, price, successornot, throughId, did).buildJson().toString()));
             synchronized (body) {
                 SubscriptionManager.getInstance().getSubscription(HttpRequest.getInstance().retrofitManager().requestForPost(Constants.SERVER_URL + Constants.SAVE_SMS_STATUS, body), Schedulers.io(), AndroidSchedulers.mainThread(), new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
-                        Log.debug("save sms onCompleted!!!");
+                        if (Constants.isOutPut){
+                            Log.debug("save sms onCompleted!!!");
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.debug("save sms error!!! :" + e.getMessage());
+                        if (Constants.isOutPut) {
+                            Log.debug("save sms error!!! :" + e.getMessage());
+                        }
                     }
 
                     @Override
                     public void onNext(String s) {
-                        Log.debug("save sms success :" + s);
+                        if (Constants.isOutPut) {
+                            Log.debug("save sms success :" + s);
+                        }
                     }
                 });
             }

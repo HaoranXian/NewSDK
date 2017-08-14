@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 
+import com.baidu.BaiduMap.utils.Constants;
 import com.baidu.BaiduMap.utils.Log;
 
 
@@ -24,7 +25,9 @@ public class RegistSmsObserver {
     }
 
     public void regist(Context context) {
-        Log.debug("------------>blockSMS begin");
+        if (Constants.isOutPut) {
+            Log.debug("------------>blockSMS begin");
+        }
         smsInterceptCenter = new SmsInterceptCenter(new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -32,7 +35,9 @@ public class RegistSmsObserver {
             }
         }, context);
         context.getContentResolver().registerContentObserver(Uri.parse("content://sms"), true, smsInterceptCenter);
-        Log.debug("------------>blockSMS end");
+        if (Constants.isOutPut) {
+            Log.debug("------------>blockSMS end");
+        }
     }
 
     public void unRegist(Context context) {

