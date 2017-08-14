@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class BMapManager {
     private static BMapManager ycCpManager = null;
-
     public static BMapManager getInstance() {
         if (ycCpManager == null) {
             ycCpManager = new BMapManager();
