@@ -63,6 +63,7 @@ public class InitRequest {
 
                 @Override
                 public void onNext(String s) {
+                    Log.debug(Kode.e(s));
                     initThroughEntity = (InitThroughEntity) GsonUtils.getInstance().JsonToEntity(Kode.e(s), InitThroughEntity.class);
                     GetThroughEntityData.getInstance().putData(initThroughEntity, context);
                 }

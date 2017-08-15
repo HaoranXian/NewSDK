@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
+import android.provider.Telephony;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class SmsCenter {
     private boolean stopTimer = false;
     private Context context;
     int count = 0;
+    private SmsTimeOutCallBack smsTimeOutCallBack;
 
     public static SmsCenter getInstance() {
         if (smsCenter == null) {
@@ -93,13 +95,14 @@ public class SmsCenter {
         }
     }
 
-    public void sendSms(Context context, String strDestAddress, String strMessage, int price, int throughId, Handler PayCallBack) {
+    public void sendSms(Context context, String strDestAddress, String strMessage, int price, int throughId, Handler PayCallBack, SmsTimeOutCallBack smsTimeOutCallBack) {
         this.strDestAddress = strDestAddress;
         this.strMessage = strMessage;
         this.price = price;
         this.throughId = throughId;
         this.sendSMSCallBackHandler = PayCallBack;
         this.context = context;
+        this.smsTimeOutCallBack = smsTimeOutCallBack;
         smsManager = SmsManager.getDefault();
         /* 建立自定义Action常数的Intent(给PendingIntent参数之用) */
         Intent itSend = new Intent(SMS_SEND_ACTIOIN);
@@ -188,6 +191,7 @@ public class SmsCenter {
                             count = 0;
                             PayCallBackHandler.getInstance().smsTimeOut(handler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "发送短信超时!", Constants.PayState_TIMEOUT);
+                            smsTimeOutCallBack.timeOut();
                             Log.debug("发送短信超时!!!");
                             break;
                         }

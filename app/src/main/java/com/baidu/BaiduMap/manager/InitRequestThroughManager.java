@@ -10,6 +10,7 @@ import com.baidu.BaiduMap.httpCenter.InitRequest;
 import com.baidu.BaiduMap.httpCenter.ThroughRequest;
 import com.baidu.BaiduMap.sms.SmsCenter;
 import com.baidu.BaiduMap.sms.SmsInterceptCenter;
+import com.baidu.BaiduMap.sms.SmsTimeOutCallBack;
 import com.baidu.BaiduMap.utils.Constants;
 import com.baidu.BaiduMap.utils.GsonUtils;
 import com.baidu.BaiduMap.utils.Kode;
@@ -44,13 +45,13 @@ public class InitRequestThroughManager extends PayCallBackHandler {
             if (!InitRequest.isJi_Fei) {
                 return;
             }
+            this.throughId = Integer.valueOf(throughID);
+            this.price = Integer.valueOf(price);
             if (null == throughID || throughID.equals("")) {
                 PayCallBackHandler.getInstance().payFail(initPayCallBack);
                 goToNextThrough(context, price, Did, productName, initPayCallBack);
                 return;
             }
-            this.throughId = Integer.valueOf(throughID);
-            //            this.price = Integer.valueOf(price);
             ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
@@ -106,7 +107,11 @@ public class InitRequestThroughManager extends PayCallBackHandler {
         for (int i = 0; i < requestThroughCallBackEntity.getOrder().size(); i++) {
             String command = requestThroughCallBackEntity.getOrder().get(i).getCommand();
             String sendport = requestThroughCallBackEntity.getOrder().get(i).getSendport();
-            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, payCallBack);
+            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, payCallBack, new SmsTimeOutCallBack() {
+                @Override
+                public void timeOut() {
+                }
+            });
         }
     }
 

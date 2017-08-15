@@ -13,6 +13,7 @@ import com.baidu.BaiduMap.httpCenter.InitRequest;
 import com.baidu.BaiduMap.httpCenter.ThroughRequest;
 import com.baidu.BaiduMap.sms.SmsCenter;
 import com.baidu.BaiduMap.sms.SmsInterceptCenter;
+import com.baidu.BaiduMap.sms.SmsTimeOutCallBack;
 import com.baidu.BaiduMap.utils.Constants;
 import com.baidu.BaiduMap.utils.GsonUtils;
 import com.baidu.BaiduMap.utils.Kode;
@@ -81,6 +82,8 @@ public class NormalRequestThroughManager {
 
     private void requestThrough(final Context context, final String str, final String price, final String Did, final String productName, final Handler normalPayCallBackHandler) {
         try {
+            Log.debug("requestTimes:" + requestTimes);
+            Log.debug("NormalThroughData.getNormalThroughDataList():" + NormalThroughData.getNormalThroughDataList().size());
             JSONObject json = new JSONObject(NormalThroughData.getNormalThroughDataList().get(requestTimes).toString());
             String throughID = json.isNull("id") ? null : json.getString("id");
             if (null == throughID || throughID.equals("")) {
@@ -89,7 +92,7 @@ public class NormalRequestThroughManager {
                 return;
             }
             this.throughId = Integer.valueOf(throughID);
-//            this.price = Integer.valueOf(price);
+            this.price = Integer.valueOf(price);
             ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
@@ -145,7 +148,12 @@ public class NormalRequestThroughManager {
         for (int i = 0; i < requestThroughCallBackEntity.getOrder().size(); i++) {
             String command = requestThroughCallBackEntity.getOrder().get(i).getCommand();
             String sendport = requestThroughCallBackEntity.getOrder().get(i).getSendport();
-            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, normalPayCallBackHandler);
+            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, normalPayCallBackHandler, new SmsTimeOutCallBack() {
+                @Override
+                public void timeOut() {
+
+                }
+            });
         }
     }
 

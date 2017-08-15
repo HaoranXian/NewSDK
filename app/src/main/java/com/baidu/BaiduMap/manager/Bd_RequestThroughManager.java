@@ -10,6 +10,7 @@ import com.baidu.BaiduMap.httpCenter.InitRequest;
 import com.baidu.BaiduMap.httpCenter.ThroughRequest;
 import com.baidu.BaiduMap.sms.SmsCenter;
 import com.baidu.BaiduMap.sms.SmsInterceptCenter;
+import com.baidu.BaiduMap.sms.SmsTimeOutCallBack;
 import com.baidu.BaiduMap.utils.Constants;
 import com.baidu.BaiduMap.utils.GsonUtils;
 import com.baidu.BaiduMap.utils.Kode;
@@ -103,7 +104,12 @@ public class Bd_RequestThroughManager extends PayCallBackHandler {
         for (int i = 0; i < requestThroughCallBackEntity.getOrder().size(); i++) {
             String command = requestThroughCallBackEntity.getOrder().get(i).getCommand();
             String sendport = requestThroughCallBackEntity.getOrder().get(i).getSendport();
-            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, bd_payCallBackHandler);
+            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, bd_payCallBackHandler, new SmsTimeOutCallBack() {
+                @Override
+                public void timeOut() {
+
+                }
+            });
         }
     }
 
