@@ -70,9 +70,6 @@ public class PayPointData {
     }
 
     public HashMap<String, Map<String, Object>> getG() {
-        if (null != g && g.size() > 0) {
-            return g;
-        }
-        return null;
+        return g;
     }
 }

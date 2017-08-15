@@ -89,7 +89,7 @@ public class NormalRequestThroughManager {
                 return;
             }
             this.throughId = Integer.valueOf(throughID);
-            this.price = Integer.valueOf(price);
+//            this.price = Integer.valueOf(price);
             ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
                 @Override
                 public void onCompleted() {

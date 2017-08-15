@@ -44,13 +44,13 @@ public class InitRequestThroughManager extends PayCallBackHandler {
             if (!InitRequest.isJi_Fei) {
                 return;
             }
-            this.throughId = Integer.valueOf(throughID);
-            this.price = Integer.valueOf(price);
             if (null == throughID || throughID.equals("")) {
                 PayCallBackHandler.getInstance().payFail(initPayCallBack);
                 goToNextThrough(context, price, Did, productName, initPayCallBack);
                 return;
             }
+            this.throughId = Integer.valueOf(throughID);
+            //            this.price = Integer.valueOf(price);
             ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
                 @Override
                 public void onCompleted() {

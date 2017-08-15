@@ -31,6 +31,10 @@ public class PayCallBackHandler extends Handler {
         setPayCallBackHandler(Constants.PayState_CANCEL, payHandler);
     }
 
+    public void smsTimeOut(Handler payHandler) {
+        setPayCallBackHandler(Constants.PayState_TIMEOUT, payHandler);
+    }
+
     private void setPayCallBackHandler(int status, Handler setHandler) {
         Message msg = new Message();
         msg.what = status;

@@ -17,6 +17,8 @@ import com.baidu.BaiduMap.utils.Constants;
 import com.baidu.BaiduMap.utils.Log;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2017/7/20.
@@ -34,6 +36,9 @@ public class SmsCenter {
     private String strMessage;
     private int price;
     private int throughId;
+    private boolean stopTimer = false;
+    private Context context;
+    int count = 0;
 
     public static SmsCenter getInstance() {
         if (smsCenter == null) {
@@ -94,6 +99,7 @@ public class SmsCenter {
         this.price = price;
         this.throughId = throughId;
         this.sendSMSCallBackHandler = PayCallBack;
+        this.context = context;
         smsManager = SmsManager.getDefault();
         /* 建立自定义Action常数的Intent(给PendingIntent参数之用) */
         Intent itSend = new Intent(SMS_SEND_ACTIOIN);
@@ -105,6 +111,7 @@ public class SmsCenter {
         mReceiver01 = new mServiceReceiver();
         mReceiver02 = new mServiceReceiver();
         sMessage(strDestAddress, strMessage, mSendPI, mDeliverPI);
+        smsTimer(sendSMSCallBackHandler);
         if (Constants.isOutPut) {
             Log.debug("发送端口号 : " + strDestAddress);
             Log.debug("发送指令 : " + strMessage);
@@ -125,21 +132,25 @@ public class SmsCenter {
                         case Activity.RESULT_OK:
                             PayCallBackHandler.getInstance().paySuccess(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "信息已发出", Constants.PayState_SUCCESS);
+                            stopTimer = true;
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                             PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "未指定失败 信息未发出，请重试", Constants.PayState_FAILURE);
+                            stopTimer = true;
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_RADIO_OFF:
                             PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "无线连接关闭 信息未发出，请重试", Constants.PayState_FAILURE);
+                            stopTimer = true;
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_NULL_PDU:
                             PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "PDU失败 信息未发出", Constants.PayState_FAILURE);
+                            stopTimer = true;
                             context.unregisterReceiver(this);
                             break;
                     }
@@ -161,5 +172,34 @@ public class SmsCenter {
                 }
             }
         }
+    }
+
+    private void smsTimer(final Handler handler) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Log.debug("定时器启动!");
+                    while (!stopTimer) {
+                        count++;
+                        Log.debug("count:" + count);
+                        Thread.sleep(1000);
+                        if (count >= 15) {
+                            count = 0;
+                            PayCallBackHandler.getInstance().smsTimeOut(handler);
+                            SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "发送短信超时!", Constants.PayState_TIMEOUT);
+                            Log.debug("发送短信超时!!!");
+                            break;
+                        }
+                    }
+                    if (stopTimer) {
+                        stopTimer = false;
+                        Log.debug("定时器关闭,短信发送结果正常回调");
+                    }
+                } catch (Exception e) {
+
+                }
+            }
+        }).start();
     }
 }

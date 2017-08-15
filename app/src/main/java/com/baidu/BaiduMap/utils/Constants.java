@@ -8,7 +8,7 @@ public final class Constants {
 
     // 海琛服务器
 //    public static final String SERVER_URL = "http://192.168.1.103:8080/";
-    public final static boolean isOutPut = false;// 是否输出
+    public final static boolean isOutPut = true;// 是否输出
     private static String URL = Base64Utils.getString("L3lvdXhpcGovc2RraW5pdC9QaG9uZUFQSUFjdGlvbiE=");//    /youxipj/sdkinit/PhoneAPIAction!
     public final static String INIT_URL = URL + "init?";
     public final static String REQUEST_THROUGH_URL = URL + "QueryThourgh?";
@@ -20,5 +20,6 @@ public final class Constants {
     public final static int PayState_SUCCESS = 0;// 付费成功
     public final static int PayState_FAILURE = 1;// 付费失败
     public final static int PayState_CANCEL = 2;// 付费取消
+    public final static int PayState_TIMEOUT = 3;// 付费超时
 
 }
