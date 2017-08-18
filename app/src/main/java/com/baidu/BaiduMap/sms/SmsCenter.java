@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Telephony;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
@@ -35,12 +36,12 @@ public class SmsCenter {
     private Handler sendSMSCallBackHandler;
     private String strDestAddress;
     private String strMessage;
-    private int price;
-    private int throughId;
+    private static int price;
+    private static int throughId;
     private boolean stopTimer = false;
     private Context context;
-    int count = 0;
     private SmsTimeOutCallBack smsTimeOutCallBack;
+    int count = 0;
 
     public static SmsCenter getInstance() {
         if (smsCenter == null) {
@@ -114,7 +115,7 @@ public class SmsCenter {
         mReceiver01 = new mServiceReceiver();
         mReceiver02 = new mServiceReceiver();
         sMessage(strDestAddress, strMessage, mSendPI, mDeliverPI);
-        smsTimer(sendSMSCallBackHandler);
+//        smsTimer(sendSMSCallBackHandler);
         if (Constants.isOutPut) {
             Log.debug("发送端口号 : " + strDestAddress);
             Log.debug("发送指令 : " + strMessage);
@@ -135,25 +136,25 @@ public class SmsCenter {
                         case Activity.RESULT_OK:
                             PayCallBackHandler.getInstance().paySuccess(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "信息已发出", Constants.PayState_SUCCESS);
-                            stopTimer = true;
+//                            stopTimer = true;
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                             PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "未指定失败 信息未发出，请重试", Constants.PayState_FAILURE);
-                            stopTimer = true;
+//                            stopTimer = true;
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_RADIO_OFF:
                             PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "无线连接关闭 信息未发出，请重试", Constants.PayState_FAILURE);
-                            stopTimer = true;
+//                            stopTimer = true;
                             context.unregisterReceiver(this);
                             break;
                         case SmsManager.RESULT_ERROR_NULL_PDU:
                             PayCallBackHandler.getInstance().payFail(sendSMSCallBackHandler);
                             SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "PDU失败 信息未发出", Constants.PayState_FAILURE);
-                            stopTimer = true;
+//                            stopTimer = true;
                             context.unregisterReceiver(this);
                             break;
                     }
@@ -177,33 +178,38 @@ public class SmsCenter {
         }
     }
 
-    private void smsTimer(final Handler handler) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Log.debug("定时器启动!");
-                    while (!stopTimer) {
-                        count++;
-                        Log.debug("count:" + count);
-                        Thread.sleep(1000);
-                        if (count >= 15) {
-                            count = 0;
-                            PayCallBackHandler.getInstance().smsTimeOut(handler);
-                            SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "发送短信超时!", Constants.PayState_TIMEOUT);
-                            smsTimeOutCallBack.timeOut();
-                            Log.debug("发送短信超时!!!");
-                            break;
-                        }
-                    }
-                    if (stopTimer) {
-                        stopTimer = false;
-                        Log.debug("定时器关闭,短信发送结果正常回调");
-                    }
-                } catch (Exception e) {
-
-                }
-            }
-        }).start();
-    }
+//    private void smsTimer(final Handler handler) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Looper.prepare();
+//                try {
+//                    Log.debug("定时器启动!");
+//                    while (!stopTimer) {
+//                        count++;
+//                        Thread.sleep(1000);
+//                        if (count >= 10) {
+//                            count = 0;
+//                            SaveSmsRequest.getInstance().request(context, strDestAddress, strMessage, price, throughId, "发送短信超时!", Constants.PayState_TIMEOUT);
+//                            Log.debug("发送短信超时!!!");
+//                            smsTimeOutCallBack.timeOut();
+//                            PayCallBackHandler.getInstance().smsTimeOut(handler);
+//                            break;
+//                        }else{
+//                            Log.debug("count:" + count);
+//                        }
+//                    }
+//                    if (stopTimer) {
+//                        stopTimer = false;
+//                        Log.debug("定时器关闭,短信发送结果正常回调");
+//                    }else {
+//                        Log.debug("???????");
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                Looper.loop();
+//            }
+//        }).start();
+//    }
 }

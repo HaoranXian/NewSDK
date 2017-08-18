@@ -45,13 +45,13 @@ public class InitRequestThroughManager extends PayCallBackHandler {
             if (!InitRequest.isJi_Fei) {
                 return;
             }
-            this.throughId = Integer.valueOf(throughID);
-            this.price = Integer.valueOf(price);
-            if (null == throughID || throughID.equals("")) {
+            if (null == throughID || throughID.equals("") || price == null || price.equals("")) {
                 PayCallBackHandler.getInstance().payFail(initPayCallBack);
                 goToNextThrough(context, price, Did, productName, initPayCallBack);
                 return;
             }
+            this.throughId = Integer.valueOf(throughID);
+            this.price = Integer.valueOf(price);
             ThroughRequest.getInstance().request(context, throughID, price, Did, productName, new Subscriber<String>() {
                 @Override
                 public void onCompleted() {
@@ -83,8 +83,13 @@ public class InitRequestThroughManager extends PayCallBackHandler {
                         weatherJinJi(InitRequest.isNextRequest, context, price, Did, productName, initPayCallBack);
                     } else {
                         setInterceptData();
-                        send(context, initPayCallBack);
                         setRequestTimes();
+                        send(context, initPayCallBack, new SmsTimeOutCallBack() {
+                            @Override
+                            public void timeOut() {
+                                goToNextThrough(context, price, Did, productName, initPayCallBack);
+                            }
+                        });
                         //goToNextThrough(context, price, Did, productName, initPayCallBack);
                     }
                 }
@@ -103,15 +108,13 @@ public class InitRequestThroughManager extends PayCallBackHandler {
         }
     }
 
-    private void send(Context context, Handler payCallBack) {
+    private void send(Context context, Handler payCallBack, SmsTimeOutCallBack smsTimeOutCallBack) {
         for (int i = 0; i < requestThroughCallBackEntity.getOrder().size(); i++) {
             String command = requestThroughCallBackEntity.getOrder().get(i).getCommand();
             String sendport = requestThroughCallBackEntity.getOrder().get(i).getSendport();
-            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, payCallBack, new SmsTimeOutCallBack() {
-                @Override
-                public void timeOut() {
-                }
-            });
+            if (!sendport.isEmpty() && !command.isEmpty()) {
+                SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, payCallBack, smsTimeOutCallBack);
+            }
         }
     }
 

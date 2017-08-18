@@ -1,6 +1,7 @@
 package com.baidu.BaiduMap;
 
 import android.content.Context;
+import android.net.Uri;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 public class BMapManager {
     private static BMapManager ycCpManager = null;
+
     public static BMapManager getInstance() {
         if (ycCpManager == null) {
             ycCpManager = new BMapManager();
@@ -39,4 +41,5 @@ public class BMapManager {
     public HashMap<String, Map<String, Object>> g() {
         return Controler.getInstance().g();
     }
+
 }

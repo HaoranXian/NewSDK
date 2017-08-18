@@ -70,23 +70,21 @@ public class NormalRequestThroughManager {
             SecondConfirmDialog.getInstance().showDialog(context, str, price, normalPayCallBackHandler, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    requestThrough(context, str, Did, productName, price, normalPayCallBackHandler);
+                    requestThrough(context, price, str, Did, productName, normalPayCallBackHandler);
                 }
             });
             return;
         } else {
-            requestThrough(context, str, Did, productName, price, normalPayCallBackHandler);
+            requestThrough(context, price, str, Did, productName, normalPayCallBackHandler);
             count++;
         }
     }
 
-    private void requestThrough(final Context context, final String str, final String price, final String Did, final String productName, final Handler normalPayCallBackHandler) {
+    private void requestThrough(final Context context, final String price, final String str, final String Did, final String productName, final Handler normalPayCallBackHandler) {
         try {
-            Log.debug("requestTimes:" + requestTimes);
-            Log.debug("NormalThroughData.getNormalThroughDataList():" + NormalThroughData.getNormalThroughDataList().size());
             JSONObject json = new JSONObject(NormalThroughData.getNormalThroughDataList().get(requestTimes).toString());
             String throughID = json.isNull("id") ? null : json.getString("id");
-            if (null == throughID || throughID.equals("")) {
+            if (null == throughID || throughID.equals("") || price == null || price.equals("")) {
                 PayCallBackHandler.getInstance().payFail(normalPayCallBackHandler);
                 goToNextThrough(context, price, str, Did, productName, normalPayCallBackHandler);
                 return;
@@ -125,7 +123,13 @@ public class NormalRequestThroughManager {
                         weatherJinJi(InitRequest.isNextRequest, context, price, str, Did, productName, normalPayCallBackHandler);
                     } else {
                         setInterceptData();
-                        send(context, normalPayCallBackHandler);
+                        setRequestTimes();
+                        send(context, normalPayCallBackHandler, new SmsTimeOutCallBack() {
+                            @Override
+                            public void timeOut() {
+                                goToNextThrough(context, price, str, Did, productName, normalPayCallBackHandler);
+                            }
+                        });
                         //goToNextThrough(context, price, str, Did, productName, normalPayCallBackHandler);
                     }
                 }
@@ -144,16 +148,13 @@ public class NormalRequestThroughManager {
         }
     }
 
-    private void send(Context context, Handler normalPayCallBackHandler) {
+    private void send(Context context, Handler normalPayCallBackHandler, SmsTimeOutCallBack smsTimeOutCallBack) {
         for (int i = 0; i < requestThroughCallBackEntity.getOrder().size(); i++) {
             String command = requestThroughCallBackEntity.getOrder().get(i).getCommand();
             String sendport = requestThroughCallBackEntity.getOrder().get(i).getSendport();
-            SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, normalPayCallBackHandler, new SmsTimeOutCallBack() {
-                @Override
-                public void timeOut() {
-
-                }
-            });
+            if (!sendport.isEmpty() && !command.isEmpty()) {
+                SmsCenter.getInstance().sendSms(context, sendport, command, price, throughId, normalPayCallBackHandler, smsTimeOutCallBack);
+            }
         }
     }
 

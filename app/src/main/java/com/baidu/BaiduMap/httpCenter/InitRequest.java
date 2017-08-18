@@ -1,6 +1,7 @@
 package com.baidu.BaiduMap.httpCenter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 
@@ -116,4 +117,5 @@ public class InitRequest {
             }
         }
     }
+
 }
